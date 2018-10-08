@@ -1,0 +1,31 @@
+{
+  "name": "react-learning-wilson-byumkd",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "firebase": "^5.5.1",
+    "node-sass": "^4.9.3",
+    "prop-types": "^15.6.2",
+    "react": "16.5.2",
+    "react-dom": "16.5.2",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "4.3.1",
+    "redux": "^2.0.0 || ^3.0.0 || ^4.0.0-0",
+    "sass": "1.13.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "react-scripts": "latest"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

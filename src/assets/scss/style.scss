@@ -1,0 +1,82 @@
+$primary-color: #00b0ff;
+$primary-dark-color: #0081cb;
+$letter: rgba(0,0,0,0.87);
+body {
+  font-family: Roboto,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  margin: 0;
+}
+
+.flex{
+  display: flex;
+}
+
+.spacer{
+  flex: 1 1 auto;
+}
+
+.flex-header{
+  display: flex;
+  flex-direction: row;
+}
+
+h1, p {
+  font-family: Lato;
+}
+
+%box-shadow{
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+}
+
+%full-width{
+  width: calc(100% - 25px);
+}
+
+.input-width{
+  @extend %full-width;
+}
+
+%center-block{
+  margin:auto !important;
+  display: block !important;
+}
+
+.center-button{
+  @extend %center-block;
+  min-width: 50%;
+}
+
+.center-block{
+  @extend %center-block;
+}
+
+.center-flex{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.center-text{
+  text-align: center;
+}
+
+.margin-top{
+  margin-top: 10px !important;
+}
+
+.icon{
+  width: 36px;
+  height: 36px;
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+.nospace{
+  padding: 0;
+  margin: 0;
+}
+
+.nodisplay{
+  display: none;
+}

@@ -1,0 +1,14 @@
+@import 'style'; 
+.background-primary{
+  color: white;
+  background-color: $primary-color;
+}
+
+.primary{
+  color: $primary-color;
+  background-color: white;
+}
+
+.white{
+  color:white !important;
+}
