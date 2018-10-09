@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 class About extends Component {
 
   constructor(props){
-    
+    super(props);
   }
   
   render(){

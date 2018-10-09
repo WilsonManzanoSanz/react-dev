@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 
 class Posts extends Component {
   constructor(props){
-    
+    super(props);
   }
   
   render(){

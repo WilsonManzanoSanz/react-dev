@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 
 class ForgotPassword extends Component {
   constructor(props){ 
+    super();
   }
   
   render(){

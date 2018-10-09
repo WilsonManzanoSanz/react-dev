@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { connect } from "react-redux";
-import ProfileCard from '/components/auth/profile-card';
-import {auth}  from '/services/auth';
+import {auth}  from './../../../services/auth';
+import ProfileCard from './../../../components/auth/profile-card';
 
 class Profile extends Component {
   constructor(props){
+    super(props);
     this.state = {user:{displayName:''}};
     auth.getCurrentUser().then(user=>{
       if(user){

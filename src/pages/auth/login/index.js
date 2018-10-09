@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { connect } from "react-redux";
-import { CardHeaderTittle } from '/components/ui/cards-icon';
-import { Input } from '/components/ui/Input';
-import firebase from '/database/firebase';
-import {auth}  from '/services/auth';
-import { addUser } from "/redux/actions/actions";
+import { CardHeaderTittle } from './../../../components/ui/cards-icon';
+import { Input } from './../../../components/ui/input';
+import firebase from './../../../database/firebase';
+import {auth}  from './../../../services/auth';
+import { addUser } from "./../../../redux/actions/actions";
 
 class Login extends Component {
   constructor(props){ 
+    super(props);
     this.state = {
       form: {email:'', password:''},
       error:false,
@@ -25,7 +26,7 @@ class Login extends Component {
     event.preventDefault();
     firebase.auth().signInWithEmailAndPassword(this.form.email, this.form.password).then((response)=>{
       this.props.addUser(response);
-      this.state.form = {};
+      this.setState = {form: {}};
       this.props.history.push('/profile');
     }).catch(function(error) {
       console.error(error);
@@ -35,7 +36,7 @@ class Login extends Component {
   googleSignIn(){
     auth.googleSignIn().then(response =>  {
       this.props.addUser(response.user);
-      this.state.form = {};
+      this.setState = {form: {}};
       this.props.history.push('/profile');
     }).catch(error => console.error(error));
   }
@@ -43,7 +44,7 @@ class Login extends Component {
   fbSignIn(){
     auth.fbSignIn().then(response =>  {
       this.props.addUser(response.user);
-      this.state.form = {};
+      this.setState = {form: {}};
       this.props.history.push('/profile');
     }).catch(error => console.error(error));
   }

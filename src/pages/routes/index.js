@@ -12,6 +12,7 @@ import {ForgotPassword} from '../auth/forgot-password';
 
 class Main extends Component {
   constructor(props){
+    super(props);
   }
   
   render(){

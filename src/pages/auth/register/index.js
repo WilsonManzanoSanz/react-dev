@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { CardHeaderTittle } from '/components/ui/cards-icon';
-import firebase from '/database/firebase';
-import {auth}  from '/services/auth';
-import { Input } from '/components/ui/input';
+import { CardHeaderTittle } from './../../../components/ui/cards-icon';
+import firebase from './../../../database/firebase';
+import {auth}  from './../../../services/auth';
+import { Input } from './../../../components/ui/input';
 
 
 class Register extends Component {
   constructor(props){ 
+    super(props);
     this.state = {
       form: {email:'', password:'', displayName:'', },
       error:false,
     };
     this.form = {};
-    this.photo = {};
+    this.photo = null;
     this.savePhotoInCache = this.savePhotoInCache.bind(this);
     this.addPhoto = this.addPhoto.bind(this);
     this.attemptRegister = this.attemptRegister.bind(this);
@@ -22,21 +23,39 @@ class Register extends Component {
 
   attemptRegister(event) {
     event.preventDefault();
-    firebase.auth().createUserWithEmailAndPassword(this.form.email, this.form.password).then((response)=>{
-      this.registerUser();
-      this.props.history.push('/');
+    const displayName = this.state.displayName;
+    const file = this.photo;
+    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
+      const newUser = {
+        email: response.user.uid,
+        uid: response.user.uid,
+        displayName: this.state.displayName,
+        photoURL:'',
+      };
+      if (this.photo){
+        auth.uploadImage(response.user.uid, this.photo).then((URL) => {
+          newUser.photoURL = URL;
+          this.registerUser(newUser);
+        }).catch(error => console.error(error));
+      } else {
+        this.props.history.push('/');
+      }
     }).catch(function(error) {
       console.error(error);
     });
   }
 
-  registerUser(){
-    auth.registerUser(this.form).then(response=>console.log('Register', response))
-      .catch(error => console.log(error));
+  registerUser(newUser){
+    auth.registerUser(newUser).then(response=>{
+      if(response.success){
+        auth.saveUser(response.data);
+        this.props.history.push('/');
+      }
+    }).catch(error => console.log(error));
   }
 
   handleChange(name, value){
-    this.form[name] = value;
+    this.setState({[name]:value});
   }
 
   savePhotoInCache(file) {
@@ -44,7 +63,7 @@ class Register extends Component {
   }
 
   addPhoto(){
-    const fileInput = document.getElementById('add-photo')
+    const fileInput = document.getElementById('add-photo');
     fileInput.click();
     fileInput.addEventListener('change', (e) => this.savePhotoInCache(e.target.files[0]));
   }
@@ -85,8 +104,8 @@ class Register extends Component {
               minlength="6"
               onChange={this.handleChange}
             />
-            <input className="nodisplay" id="add-photo"/>
-            <button  className="center-button margin-top raised" type="buttton" onClick={this.addPhoto}> 
+            <input className="nodisplay" id="add-photo" type="file"/>
+            <button  className="center-button margin-top raised" type="button" onClick={this.addPhoto}> 
               AGREGAR FOTO
             </button>
             <button  className="center-button margin-top" type="submit"> 

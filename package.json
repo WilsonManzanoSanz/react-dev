@@ -14,13 +14,15 @@
     "sass": "1.13.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=200 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "react-scripts": "latest"
+    "react-scripts": "latest",
+    "nodemon": "^1.18.3",
+    "webpack-cli": "^3.1.0"
   },
   "browserslist": [
     ">0.2%",

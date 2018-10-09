@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 
 class Input extends Component {
   constructor(props){
+    super(props);
     this.state = {value: ''};
     this.handleChange = (value) => event => {
       event.target.classList.add('touched');

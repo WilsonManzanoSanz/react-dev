@@ -1,6 +1,8 @@
-import firebase from '/database/firebase';
-import store from '/redux/store';
-import { addUser } from "/redux/actions/actions";
+import firebase from '../database/firebase';
+import store from '../redux/store';
+import { addUser } from "../redux/actions/actions";
+import { host } from './constants/constant';
+
 const headers = {
   'Access-Control-Allow-Origin':'*',
   'Access-Control-Allow-Methods': 'POST, PUT, DELETE, GET, OPTIONS',
@@ -20,6 +22,8 @@ class AuthService {
     this.getCurrentUser = this.getCurrentUser.bind(this);
     this.fbSignIn = this.fbSignIn.bind(this);
     this.googleSignIn = this.googleSignIn.bind(this);
+    this.uploadImage = this.uploadImage.bind(this);
+    this.saveUser = this.saveUser.bind(this);
     console.log('Initialize AuthService...');
     this.request = null;
     this.loading = false;
@@ -35,18 +39,9 @@ class AuthService {
         } else {
           if(!this.loading){
             this.loading = true;
-            const newUser = { 
-              displayName : user.displayName,
-              email: user.email,
-              uid: user.uid
-            };
-            console.log('loading', this.loading);
             this.getUserFromServer(user).then(responseUser => {
               if(responseUser.success){
-                console.log('User is logged', this.user);
-                this.user = responseUser.data;
-                localStorage.setItem(`user_${user.uid}`, JSON.stringify(responseUser.data));
-                store.dispatch(addUser(this.user));
+                this.saveUser(responseUser.data);
               }else {
                 Promise.reject(responseUser.message);
               }
@@ -109,7 +104,7 @@ class AuthService {
   }
 
   getUserFromServer(user) {
-    return fetch(`https://backend-react-wilsonmanzanosanz244290.codeanyapp.com/api/users/${user.uid}`,
+    return fetch(`${host}/api/users/${user.uid}`,
         {
       mode: 'cors',
       headers: headers
@@ -118,12 +113,20 @@ class AuthService {
 
   registerUser(user) {
     const newUser = {...user, uid: firebase.auth().currentUser.uid};
-    return fetch(`https://backend-react-wilsonmanzanosanz244290.codeanyapp.com/api/users/`,
+    return fetch(`${host}/api/users/`,
         {
       method: 'POST',
       headers: headers,
       body:JSON.stringify(newUser)
-    }).then(response => response.json()).catch(error=> console.error(error));
+    }).then(response => response.json()
+    ).catch(error=> console.error(error));
+  }
+  
+  saveUser(user){
+    console.log('User is logged', user);
+    this.user = user;
+    localStorage.setItem(`user_${user.uid}`, JSON.stringify(this.user));
+    store.dispatch(addUser(this.user));
   }
 
   getCurrentUser(){
@@ -144,13 +147,23 @@ class AuthService {
   
     });
   }
+  
+  uploadImage(uid, file) {
+    // Create a root reference
+    return new Promise((resolve, reject) => {
+      const  storageRef = firebase.storage().ref().child(`photo/${uid}`);
+      storageRef.put(file).then((snapshot)=> {
+        snapshot.ref.getDownloadURL().then(downloadURL => resolve(downloadURL)).catch(error => reject(error));
+      });
+    });
+  }
 
   signOut(){
     return firebase.auth().signOut().then(()=> {
       // Sign-out successful.
       localStorage.getItem(`user_${this.user.uid}`);
     }).catch((error) => {
-      console.errror(error);
+      console.error(error);
       // An error happened.
     });
   }

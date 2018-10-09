@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Link } from 'react-router-dom';
-import { uiService } from '/services/ui.service';
-import {auth}  from '/services/auth';
+import { uiService } from './../../../services/ui.service';
+import {auth}  from './../../../services/auth';
 import { connect } from "react-redux";
-import { Route , withRouter} from 'react-router-dom';
-import { removeUser } from "/redux/actions/actions";
+import { removeUser } from "./../../../redux/actions/actions";
+ import { withRouter } from "react-router-dom";
 
 const navs =  [
   {route: '/about', name: 'About'},
@@ -15,7 +15,7 @@ const navs =  [
 class Navbar extends Component{
 
   constructor(props){
-    super();
+    super(props);
     this.state = { isMobile: uiService.isMobile(), open: false, user: null, showMenu: false};
     this.toggleDrawer = this.toggleDrawer.bind(this);
     this.toggleNav = this.toggleNav.bind(this);
@@ -35,7 +35,6 @@ class Navbar extends Component{
   }
 
   signOut(){
-    const _this = this;
     auth.signOut().then( success => {
       this.props.removeUser();
       this.props.history.push('/');
@@ -136,6 +135,7 @@ class Navbar extends Component{
       </div>
     );
   }
+
 }
 
 const mapStateToProps = state => {

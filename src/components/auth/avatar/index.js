@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 
 class Avatar extends Component{
   constructor(props){
-    super();
+    super(props);
   }
   
   render(){
