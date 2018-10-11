@@ -81,7 +81,6 @@ class Navbar extends Component{
   }
 
   componentDidMount() {
-    console.log('navbar', this.props);
     this.elemContent = document.getElementById('side-overlay');
     this.elemNav = document.getElementById('side-nav'); 
     this.elemContent.addEventListener('click', (e)=> {

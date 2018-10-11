@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Root } from './pages/root';
 import { Provider } from 'react-redux'; 
@@ -13,6 +13,5 @@ const App = () => (
     <Root />
   </Provider>
 );
-
 
 render(<App />, document.getElementById('root'));

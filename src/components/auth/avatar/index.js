@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import PropTypes from 'prop-types';
 
 class Avatar extends Component{
   constructor(props){
@@ -12,5 +13,9 @@ class Avatar extends Component{
     );
   }
 }
+
+Avatar.propTypes = {
+  user: PropTypes.object
+};
 
 export { Avatar };

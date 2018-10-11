@@ -1,1 +1,21 @@
-<div id="root"></div>
+<!doctype html>
+<html itemscope="" itemtype="http://schema.org/WebPage" lang="es">
+  <head>
+    <meta content="Search any barber near you" name="description">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>Google</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      function initMap(){
+        window.googlemaps = google;
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrRGe2Wr3FT-dRGCPFkbqNL3fg9xck020&callback=initMap&libraries=places">
+    </script>
+  </body>
+</html>
