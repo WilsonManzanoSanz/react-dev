@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import { Avatar } from '../../auth/avatar';
 import { Link } from 'react-router-dom';
 import { uiService } from './../../../services/ui.service';
 import {auth}  from './../../../services/auth';
 import { connect } from "react-redux";
 import { removeUser } from "./../../../redux/actions/actions";
- import { withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 const navs =  [
   {route: '/about', name: 'About'},

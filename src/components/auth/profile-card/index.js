@@ -18,7 +18,7 @@ class ProfileCard extends Component {
     <div className="center-card">
       <div className="card">
         <div className="flex-header">
-          <Avatar user={this.props.user}/>
+          <Avatar url={this.props.user.photoURL}/>
           <UserAvatarInfo user={this.props.user}/>
         </div>
       </div>

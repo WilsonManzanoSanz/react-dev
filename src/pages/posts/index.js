@@ -28,7 +28,7 @@ class Posts extends Component {
       {
       location: this.state.position,
       radius: '500',
-      type: ['hair_care']
+      type: ['hospital']
       }, this.addPlaces); 
   }
   
@@ -66,7 +66,7 @@ class Posts extends Component {
     return (
       <div className="google-maps" id="google-maps">
         <div id="map"></div>
-        <ListPlaces list={this.state}/>
+        <ListPlaces list={this.state.results}/>
         <button className="" type="button" onClick={this.askForGPS}>Geolocation</button>
       </div>
    );
