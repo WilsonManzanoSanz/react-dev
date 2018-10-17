@@ -40,8 +40,9 @@ class Register extends Component {
       } else {
         this.props.history.push('/');
       }
-    }).catch(function(error) {
+    }).catch(error => {
       console.error(error);
+      this.setState({errorMessage: error.message});
     });
   }
 
@@ -104,6 +105,7 @@ class Register extends Component {
               minlength="6"
               onChange={this.handleChange}
             />
+            { this.state.errorMessage && <h4 className="center-text red">{this.state.errorMessage} </h4>}
             <input className="nodisplay" id="add-photo" type="file"/>
             <button  className="center-button margin-top raised" type="button" onClick={this.addPhoto}> 
               AGREGAR FOTO

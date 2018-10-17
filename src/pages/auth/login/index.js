@@ -11,10 +11,10 @@ class Login extends Component {
   constructor(props){ 
     super(props);
     this.state = {
-      form: {email:'', password:''},
+      email:'',
+      password:'',
       error:false,
     };
-    this.form = {};
     this.attemptLogin = this.attemptLogin.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.fbSignIn = this.fbSignIn.bind(this);
@@ -23,13 +23,15 @@ class Login extends Component {
   }
 
   attemptLogin(event) {
+    console.log(this.state.form);
     event.preventDefault();
-    firebase.auth().signInWithEmailAndPassword(this.form.email, this.form.password).then((response)=>{
+    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
       this.props.addUser(response);
       this.setState = {form: {}};
       this.props.history.push('/profile');
-    }).catch(function(error) {
+    }).catch(error => {
       console.error(error);
+      this.setState({errorMessage: error.message});
     });
   }
 
@@ -38,7 +40,10 @@ class Login extends Component {
       this.props.addUser(response.user);
       this.setState = {form: {}};
       this.props.history.push('/profile');
-    }).catch(error => console.error(error));
+    }).catch(error => {
+      this.setState({errorMessage: error.message});
+      console.error(error);
+    });
   }
 
   fbSignIn(){
@@ -46,7 +51,10 @@ class Login extends Component {
       this.props.addUser(response.user);
       this.setState = {form: {}};
       this.props.history.push('/profile');
-    }).catch(error => console.error(error));
+    }).catch(error => {
+      this.setState({errorMessage: error.message});
+      console.error(error);
+    });
   }
 
   goTo(path){
@@ -54,7 +62,7 @@ class Login extends Component {
   }
 
   handleChange(name, value){
-    this.form[name] = value;
+    this.setState({[name]:value});
   }
   
   render(){
@@ -84,6 +92,7 @@ class Login extends Component {
               onChange={this.handleChange}
             />
             <h4 className="center-text">Ingresa con </h4>
+            { this.state.errorMessage && <h4 className="center-text red">{this.state.errorMessage} </h4>}
             <div className="center-flex" id="login-options">
               <img onClick={this.googleSignIn} src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" className="icon pointer"/>
               <img onClick={this.fbSignIn} src="https://upload.wikimedia.org/wikipedia/commons/c/c2/F_icon.svg" className="icon pointer"/>

@@ -12,10 +12,9 @@ class ListPlaces extends Component {
   }
   
   render(){
-    console.log(this.props.list);
     const places = this.props.list.map((value) => {
       return (
-        <div className="card">
+        <div className="card" key={value.name}>
           <div className="flex-header">
            { value.photos ? ( <Avatar url={value.photos[0].getUrl()}/>) : <Avatar url={value.icon}/>}
             <div className="card-header-user">
