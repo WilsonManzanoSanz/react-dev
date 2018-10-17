@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { ListPlaces } from '../../components/home/list-places';
+import { PlaceCard } from '../../components/home/place-card';
 import { PlaceMarker } from '../../components/home/place-marker';
 import { Input } from '../../components/ui/input';
 
@@ -12,12 +12,13 @@ let infowindow;
 class Posts extends Component {
   constructor(props){
     super(props);
-    this.state = {position : {lat:10.974288, lng:-74.802741}, results: [], marker:null};
+    this.state = {position : {lat:10.974288, lng:-74.802741}, results: [], place:null};
     this.askForGPS = this.askForGPS.bind(this);
     this.addPlaces = this.addPlaces.bind(this);
     this.createMarker = this.createMarker.bind(this);
     this.showDetails = this.showDetails.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.hideDetials = this.hideDetials.bind(this);
   }
   
   componentDidMount(){
@@ -26,7 +27,6 @@ class Posts extends Component {
       zoom: 15
     });
     
-    // infowindow = new window.google.maps.InfoWindow();
     const placeService = new window.google.maps.places.PlacesService(map);
     
     placeService.nearbySearch(
@@ -40,25 +40,20 @@ class Posts extends Component {
   addPlaces(results, status){
     this.setState(() => {return {results:results}});
     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-      for (var i = 0; i < results.length; i++) {
+      for (let i = 0; i < results.length; i++) {
         this.createMarker(results[i]);
       }
     }
   }
   
   createMarker(place) {
-    var placeLoc = place.geometry.location;
-    var marker = new window.google.maps.Marker({
+    const placeLoc = place.geometry.location;
+    const marker = new window.google.maps.Marker({
       map: map,
       position: place.geometry.location
     });
     window.google.maps.event.addListener(marker, 'click', (e)=> {
-        /*infowindow = new window.google.maps.InfoWindow();
-        infowindow.setPosition(e.latLng);
-        infowindow.setContent(place.name);
-        infowindow.open(map);*/
-        console.log('hospital', e);
-        this.showDetails(e);
+        this.showDetails(place, e);
       });
   }
   
@@ -75,18 +70,25 @@ class Posts extends Component {
   }
   
   
-  showDetails(){
-    
-    //this.setState({slideInfo:true});
+  showDetails(place, event){
+    this.setState({place:place});
+  }
+  
+  hideDetials(){
+    console.log('hide');
+    this.setState({place:null});
   }
   
   render(){
+    const listPlaces = this.state.results.map((value) => {
+      return (<PlaceCard key={value.name} place={value} />);
+    });
     return (
       <div className="google-maps" id="google-maps">
-        { this.state.marker && <PlaceMarker place={this.state.marker}/>}
+        { this.state.place && <PlaceCard id="map-marker" place={this.state.place} delete={true} closeItself={this.hideDetials}/>}
         <div id="map"></div>
         <div className="padding20">
-         <ListPlaces list={this.state.results}/>
+         { listPlaces }
         </div>
       </div>
    );

@@ -81,3 +81,13 @@ html, body {
 #target {
   width: 345px;
 }
+
+div#map-marker {
+    position: fixed;
+    height: 40px;
+    width: 80%;
+    z-index: 20;
+    background: whitesmoke;
+    top: 70px;
+    right: 20px;
+}

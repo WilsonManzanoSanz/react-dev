@@ -18,5 +18,8 @@ class UserAvatarInfo extends Component {
   }
 }
 
+UserAvatarInfo.propTypes = {
+  user: PropTypes.object
+};
 
 export {UserAvatarInfo};
