@@ -36,7 +36,7 @@ h1, p {
 }
 
 %center-block{
-  margin:auto !important;
+  margin: 0 auto;
   display: block !important;
 }
 
@@ -92,4 +92,7 @@ h1, p {
 }
 .margin10{
   margin:10px;
+}
+.sub-span{
+  padding-left:5px;
 }

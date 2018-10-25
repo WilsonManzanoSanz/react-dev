@@ -11,11 +11,11 @@
   }
 }
 
-/* On mouse-over, add a deeper shadow */
+/* On mouse-over, add a deeper shadow 
 .card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-
+} 
+*/
 /* Ripple effect */
 button {
   background-position: center;
@@ -23,13 +23,13 @@ button {
 }
 button:hover {
   background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+ // box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 button:active {
   background-color: #6eb9f7;
   background-size: 100%;
   transition: background 0s;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
+//  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
 }
 
 /* Button style */
@@ -97,6 +97,14 @@ button.raised {
   width: 25%;
   display: block;
   margin: auto;
+}
+
+.image-card{
+  padding-top:10px;
+  max-width:100%;
+  max-height:250px;
+  margin:auto;
+  display:block;
 }
 
 .menu{

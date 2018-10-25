@@ -4,7 +4,7 @@ import {  Route } from 'react-router-dom';
 // Pages
 import About from '../about';
 import {Home} from '../home';
-import {Posts} from '../posts';
+import {Place} from '../places';
 import Login from '../auth/login';
 import {Register} from '../auth/register';
 import Profile from '../auth/profile';
@@ -20,7 +20,7 @@ class Main extends Component {
     <div className="main-container" id="main-container" ref="main-container">
       <Route exact path="/" component={Home} />
       <Route path="/about" component={About} />
-      <Route path="/posts" component={Posts} />
+      <Route path="/place/:place" component={Place} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/profile" component={Profile} />
