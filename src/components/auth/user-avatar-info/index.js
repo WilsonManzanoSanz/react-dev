@@ -12,8 +12,8 @@ class UserAvatarInfo extends Component {
   render(){
     return (
     <div className="card-header-user">
-      <p className="nospace">{this.props.user.displayName}</p>
-      <p className="nospace subtittle">{this.props.user.email}</p>
+      <h3 className="nospace">{this.props.user.displayName}</h3>
+      <h4 className="nospace subtittle">{this.props.user.email}</h4>
     </div>);
   }
 }

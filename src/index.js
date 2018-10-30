@@ -3,6 +3,8 @@ import { render } from 'react-dom';
 import { Root } from './pages/root';
 import { Provider } from 'react-redux'; 
 import store from './redux/store'; 
+// Register Service Worker
+import * as serviceWorker from './serviceWorker';
 // SCSS
 import './assets/scss/style.scss';
 import './assets/scss/material.scss';
@@ -15,3 +17,5 @@ const App = () => (
 );
 
 render(<App />, document.getElementById('root'));
+
+serviceWorker.register();

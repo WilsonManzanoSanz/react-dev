@@ -15,8 +15,6 @@ class PlaceDetailedCard extends Component {
   
   componentDidMount(){
     if(this.props.expandCard){
-      console.log(this.props.place.position);
-      console.log(document.getElementById('map-detail'));
       map = new window.google.maps.Map(document.getElementById('map-detail'), {
         center: this.props.place.position,
         zoom: 15
@@ -30,6 +28,7 @@ class PlaceDetailedCard extends Component {
   
   goToProps(){
     const photo = (this.props.place.photos) ? (this.props.place.photos[0].getUrl()) : (this.props.place.icon);
+    window.scrollTo(0, 0);
     this.props.history.push({pathname:`/place/${this.props.place.id}`, 
                              state:{place:{
                                id:this.props.place.id, 
@@ -45,7 +44,7 @@ class PlaceDetailedCard extends Component {
   render(){
     return (
       <div id={this.props.id} className={this.props.className} onClick={this.goToProps}>
-        <h2 className="nospace">{this.props.place.name}</h2>
+        {this.props.expandCard ? (<h1 className="nospace">{this.props.place.name}</h1>) : (<h2 className="nospace">{this.props.place.name}</h2>)}
         <h4 className="nospace gray">{this.props.place.vicinity}</h4>
         { this.props.place.photos ? ( <img className="image-card" src={this.props.place.photos[0].getUrl()}/>) : <img  className="image-card" src={this.props.place.photo}/>}
         <hr/>

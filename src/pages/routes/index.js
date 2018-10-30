@@ -9,6 +9,7 @@ import Login from '../auth/login';
 import {Register} from '../auth/register';
 import Profile from '../auth/profile';
 import {ForgotPassword} from '../auth/forgot-password';
+import {UserProfiles} from '../auth/profiles';
 
 class Main extends Component {
   constructor(props){
@@ -21,6 +22,7 @@ class Main extends Component {
       <Route exact path="/" component={Home} />
       <Route path="/about" component={About} />
       <Route path="/place/:place" component={Place} />
+      <Route exact path="/profiles/place/:place" component={UserProfiles} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/profile" component={Profile} />
