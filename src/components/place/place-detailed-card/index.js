@@ -11,6 +11,7 @@ class PlaceDetailedCard extends Component {
   constructor(props){
     super(props);
     this.goToProps = this.goToProps.bind(this);
+    this.goToStaffs = this.goToStaffs.bind(this);
   }
   
   componentDidMount(){
@@ -24,6 +25,12 @@ class PlaceDetailedCard extends Component {
         position: this.props.place.position
       });
     }
+  }
+  
+  goToStaffs(e){
+     e.stopPropagation(); 
+     this.props.history.push({pathname:`/staffs/${this.props.place.id}`, 
+                             state:{id:this.props.place.id}});
   }
   
   goToProps(){
@@ -81,7 +88,7 @@ class PlaceDetailedCard extends Component {
         </div>
         { this.props.expandCard &&
           <div>
-            <button  className="center-button schedule-button" type="button">
+            <button  className="center-button schedule-button" type="button" onClick={(e) => this.goToStaffs(e)}>
               SCHEDULE 
             </button>
             <h3>Hours</h3>
@@ -92,7 +99,7 @@ class PlaceDetailedCard extends Component {
             <p>Friday 7am - 5pm </p>
             <p>Saturday 7am - 5pm </p>
             <p>Sunday 7am - 5pm </p> 
-            <div className="google-maps" id="google-maps">
+            <div>
             <h2>Location</h2>
               <div id="map-detail"></div>
             </div>

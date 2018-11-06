@@ -5,6 +5,7 @@ import {  Route } from 'react-router-dom';
 import About from '../about';
 import {Home} from '../home';
 import {Place} from '../places';
+import {Schedules} from '../schedules';
 import Login from '../auth/login';
 import {Register} from '../auth/register';
 import Profile from '../auth/profile';
@@ -22,10 +23,11 @@ class Main extends Component {
       <Route exact path="/" component={Home} />
       <Route path="/about" component={About} />
       <Route path="/place/:place" component={Place} />
-      <Route exact path="/profiles/place/:place" component={UserProfiles} />
+      <Route exact path="/staffs/:place" component={UserProfiles} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/profile" component={Profile} />
+      <Route path="/schedule/:id" component={Schedules} />
       <Route path="/forgot-password" component={ForgotPassword} />
     </div>);
   }

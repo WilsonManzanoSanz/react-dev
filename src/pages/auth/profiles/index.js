@@ -6,19 +6,19 @@ import {UserHeader} from './../../../components/auth/user-header';
 const users = [
   {
     displayName:'Wilson Manzano',
-    email:'wilson.manzanosanz@gmail.com',
+    email:'Profesional doctor',
     photoURL:'https://www.cmgsite.com/wp-content/uploads/2015/12/SQUARE25-600x600.jpg',
     uid:'akomfnaOFANPfnao'
   },
   {
     displayName:'Fashion Fever',
-    email:'fashion@gmail.com',
+    email:'Cardiologic',
     photoURL:'https://www.maximus.com/sites/all/themes/maximus/assets/images/homepage-image.jpg',
     uid:'akomfnaOFANPfnao'
   },
   {
     displayName:'Gabriel Coronado',
-    email:'gabriel@gmail.com',
+    email:'homosexualigic',
     photoURL:'https://cdn.images.express.co.uk/img/dynamic/galleries/x701/389530.jpg',
     uid:'akomfnaOFANPfnao'
   },
@@ -33,16 +33,23 @@ const users = [
 class UserProfiles extends Component {
   constructor(props){
     super(props);
+    this.goToSchedule = this.goToSchedule.bind(this);
+  }
+  
+  goToSchedule(id){
+    this.props.history.push(`/schedule/${id}`);
   }
   
   render(){
     const userCards = users.map((value) => {
-      return  <div className="card"><UserHeader user={value}/></div>
+      return  <div className="card" onClick={() => {this.goToSchedule(value.uid)}}><UserHeader user={value}/></div>
     });
     return (
-      <div className="center-card">
-          <h3>Choose an staff</h3>
-          {userCards}
+      <div>
+        <h2 className="nomargin card">Choose an staff</h2>
+        <div className="center-card">
+            {userCards}
+        </div>
       </div>
     );
   }

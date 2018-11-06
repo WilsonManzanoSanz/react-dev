@@ -8,7 +8,6 @@ class PlaceMarker extends Component {
   }
   
   render(place){
-    console.log(this.props);
     return (<div className="card">
               <div>
                 {this.props.place.name}
