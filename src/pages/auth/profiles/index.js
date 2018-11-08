@@ -36,13 +36,15 @@ class UserProfiles extends Component {
     this.goToSchedule = this.goToSchedule.bind(this);
   }
   
-  goToSchedule(id){
-    this.props.history.push(`/schedule/${id}`);
+  goToSchedule(value){
+    this.props.history.push({pathname:`/schedule/${value.uid}`, state:{
+      profile:value
+    }});
   }
   
   render(){
     const userCards = users.map((value) => {
-      return  <div className="card" onClick={() => {this.goToSchedule(value.uid)}}><UserHeader user={value}/></div>
+      return  <div className="card" onClick={() => {this.goToSchedule(value)}}><UserHeader user={value}/></div>
     });
     return (
       <div>

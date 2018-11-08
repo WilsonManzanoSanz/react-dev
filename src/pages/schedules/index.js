@@ -7,6 +7,7 @@ import '../../assets/scss/vanillaCalendar.scss';
 class Schedules extends Component {
   constructor(props){
     super(props);
+    console.log(this.props);
   }
   
   componentDidMount(){
@@ -19,7 +20,7 @@ class Schedules extends Component {
     return (
     <div className="center-card">
       <div className="card">
-        <h1 className="nomargin">Juanito Caleman</h1>
+        <h1 className="nomargin">{this.props.location.state.profile.displayName}</h1>
         <h3 className="gray nomargin">Choose a day to schedule</h3>
         <div id="v-cal">
           <div class="vcal-header">
