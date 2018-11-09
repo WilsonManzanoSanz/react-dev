@@ -74,7 +74,7 @@ class Register extends Component {
     <div className="center-card">
       <div className="card">
         <CardHeaderTittle />
-          <form  onSubmit={this.attemptRegister}  id="form-id">
+          <form  onSubmit={this.attemptRegister}  id="form-register-id">
             <Input
               id="register-name"
               name="displayName"

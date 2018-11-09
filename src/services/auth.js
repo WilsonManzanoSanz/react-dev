@@ -1,14 +1,14 @@
 import firebase from '../database/firebase';
 import store from '../redux/store';
 import { addUser } from "../redux/actions/actions";
-import { host } from './constants/constant';
+import { host , headers } from './constants/constant';
 
-const headers = {
+/* const headers = {
   'Access-Control-Allow-Origin':'*',
   'Access-Control-Allow-Methods': 'POST, PUT, DELETE, GET, OPTIONS',
   'Content-Type': "application/json" 
 };
-
+*/
 const provider = new firebase.auth.GoogleAuthProvider();
 const providerFb = new firebase.auth.FacebookAuthProvider();
 

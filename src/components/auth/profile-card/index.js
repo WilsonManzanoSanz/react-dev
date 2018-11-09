@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
 import {UserHeader} from '../user-header';
 import PropTypes from 'prop-types';
+import { withRouter } from "react-router-dom";
 
 import './style.scss';
 let map;
@@ -12,6 +13,8 @@ let map;
 class ProfileCard extends Component {
   constructor(props){
     super(props);
+
+    this.goToAddNewPlace = this.goToAddNewPlace.bind(this);
   }
   
   componentDidMount(){
@@ -25,15 +28,20 @@ class ProfileCard extends Component {
     });
   }
   
+  goToAddNewPlace(){
+    this.props.history.push('/newplace');
+  }
+  
   render(){
     return (
-    <div className="center-card">
+    <div className="center-card" id="profile-card">
       <div className="card">
         <UserHeader user={this.props.user}/>
         <img className="image-card" src={this.props.user.photoURL}/>
         <h4 className="">Appointments</h4>
         <p className="">You have an appointment on Bother Fast Food on Monday at 5pm - 5:30pm</p>
         <div id="map-detail-user"></div>
+        <button className=" center-button" type="button" id="button-newplace" onClick={this.goToAddNewPlace}>ADD NEW PLACE</button>
       </div>
     </div>);
   }
@@ -44,4 +52,4 @@ const mapStateToProps = state => {
 };
 
 
-export default connect(mapStateToProps)(ProfileCard);
+export default withRouter(connect(mapStateToProps)(ProfileCard));
