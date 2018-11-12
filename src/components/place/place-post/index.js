@@ -10,10 +10,13 @@ class PlacePost extends Component {
     super(props);
     this.addNewPlace = this.addNewPlace.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    placeService.getPlaces().then(response => console.log(response)).catch(error => console.error(error));
+    this.uploadPhoto = this.uploadPhoto.bind(this);
+    this.savePhotoInCache = this.savePhotoInCache.bind(this);
+    this.photo = null;
   }
   
-  addNewPlace(){
+  addNewPlace(event){
+    event.preventDefault();
     const place = {
       name:this.state.displayName,
       description: this.state.description,
@@ -22,8 +25,30 @@ class PlacePost extends Component {
 	    latitude:10.9742,
 	    longitude:-74.8032,
 	    uid:this.props.user.uid,
+      user_id:7
+    };
+    if(this.photo){
+       placeService.uploadImage().then(response => {
+         place.photo = response;
+         placeService.postPlace(place).then(response => {
+            console.log('places',response);
+          }).catch(error => console.error(error));
+      }).catch(error => console.error(error));
+    } else {
+      placeService.postPlace(place).then(response => {
+            console.log('places',response);
+      }).catch(error => console.error(error));
     }
-    
+  }
+  
+  savePhotoInCache(file) {
+    this.photo = file;
+  }
+
+  uploadPhoto(){
+    const fileInput = document.getElementById('add-photo');
+    fileInput.click();
+    fileInput.addEventListener('change', (e) => this.savePhotoInCache(e.target.files[0]));
   }
   
   handleChange(name, value){
@@ -68,6 +93,7 @@ class PlacePost extends Component {
               minlength="6"
               onChange={this.handleChange}
             />
+            <input type="file" className="nodisplay" id="file-newplace"></input>
             <Input
               id="place-number"
               name="number"
@@ -78,17 +104,7 @@ class PlacePost extends Component {
               minlength="6"
               onChange={this.handleChange}
             />
-            <Input
-              id="place-number2"
-              name="number2"
-              placeholder="Ingresa otro numero de atención (opcional)"
-              className="input-width padding20"
-              type="number"
-              required={true}
-              minlength="6"
-              onChange={this.handleChange}
-            />
-            <button type="button" className="center-button raised">SUBIR FOTO</button>
+            <button type="button" className="center-button raised" onClick={this.uploadPhoto}>SUBIR FOTO</button>
             <button type="submit" className="center-button">AÑADIR LOCAL</button>
           </form>
         </div>

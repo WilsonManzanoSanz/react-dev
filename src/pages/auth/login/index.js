@@ -23,7 +23,6 @@ class Login extends Component {
   }
 
   attemptLogin(event) {
-    console.log(this.state.form);
     event.preventDefault();
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
       this.props.addUser(response);
