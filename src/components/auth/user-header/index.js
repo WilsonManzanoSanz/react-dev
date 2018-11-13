@@ -12,7 +12,7 @@ class UserHeader extends Component {
   render(){
     return (
       <div className="flex-header">
-        <Avatar url={this.props.user.photoURL}/>
+        <Avatar url={Boolean(this.props.user.photoURL) ? this.props.user.photoURL : this.props.user.photo_url}/>
         <UserAvatarInfo user={this.props.user}/>
       </div>
     );

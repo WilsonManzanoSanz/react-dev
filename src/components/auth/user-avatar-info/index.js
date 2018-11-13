@@ -12,7 +12,7 @@ class UserAvatarInfo extends Component {
   render(){
     return (
     <div className="card-header-user">
-      <h3 className="nospace">{this.props.user.displayName}</h3>
+      <h3 className="nospace">{Boolean(this.props.user.displayName) ? this.props.user.displayName : this.props.user.name}</h3>
       <h4 className="nospace subtittle">{this.props.user.email}</h4>
     </div>);
   }

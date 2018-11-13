@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
 import { Input } from '../../ui/input';
+import PropTypes from 'prop-types';
 import { CardHeaderTittle } from '../../ui/cards-icon';
 import { placeService } from '../../../services/place';
 
@@ -111,5 +112,13 @@ class PlacePost extends Component {
        </div>);
   }
 }
+
+PlacePost.propTypes = {
+  user: PropTypes.object,
+};
+      
+PlacePost.defaultProps = {
+  user: {},
+};
 
 export {PlacePost};

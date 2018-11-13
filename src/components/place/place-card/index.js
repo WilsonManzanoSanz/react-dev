@@ -14,15 +14,17 @@ class PlaceCard extends Component {
   }
   
   goToProps(){
-    const photo = (this.props.place.photos) ? (this.props.place.photos[0].getUrl()) : (this.props.place.icon);
+    //const photo = (this.props.place.photos) ? (this.props.place.photos[0].getUrl()) : (this.props.place.icon);
     this.props.history.push({pathname:`/place/${this.props.place.id}`, 
                              state:{place:{
                                id:this.props.place.id, 
                                name:this.props.place.name,
                                opening_hours: this.props.place.opening_hours,
                                rating:this.props.place.rating,
-                               vicinity:this.props.place.vicinity,
-                               photo:photo,
+                               address:this.props.place.address,
+                               photo_url:this.props.place.photo_url,
+                               schedule:this.props.place.schedule,
+                               workers:this.props.place.workers,
                              }}}); 
   }
   
@@ -36,10 +38,10 @@ class PlaceCard extends Component {
       <div id={this.props.id} className={this.props.className} onClick={this.goToProps}>
        { this.props.delete && <div className="top-right" onClick={(e) => this.closeWindow(e)}> x </div>}
         <div className="flex-header pointer">
-         { this.props.place.photos ? ( <Avatar url={this.props.place.photos[0].getUrl()}/>) : <Avatar url={this.props.place.icon}/>}
+         <Avatar url={this.props.place.photo_url}/>
           <div className="card-header-user">
             <p className="nospace">{this.props.place.name}</p>
-            <p className="nospace subtittle">{this.props.place.vicinity}</p>
+            <p className="nospace subtittle">{this.props.place.address}</p>
           </div>
         </div>
       </div>

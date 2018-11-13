@@ -43,9 +43,12 @@ class UserProfiles extends Component {
   }
   
   render(){
-    const userCards = users.map((value) => {
-      return  <div className="card" onClick={() => {this.goToSchedule(value)}}><UserHeader user={value}/></div>
-    });
+    let userCards = null;
+    if(this.props.location.state &&  this.props.location.state.workers){
+       userCards = this.props.location.state.workers.map((value) => {
+        return  <div className="card" onClick={() => {this.goToSchedule(value)}}><UserHeader user={value}/></div>
+      });
+    }
     return (
       <div>
         <h2 className="nomargin card">Choose an staff</h2>

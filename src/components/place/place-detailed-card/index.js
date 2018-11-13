@@ -30,11 +30,11 @@ class PlaceDetailedCard extends Component {
   goToStaffs(e){
      e.stopPropagation(); 
      this.props.history.push({pathname:`/staffs/${this.props.place.id}`, 
-                             state:{id:this.props.place.id}});
+                             state:{id:this.props.place.id, workers:this.props.place.workers}});
   }
   
   goToProps(){
-    const photo = (this.props.place.photos) ? (this.props.place.photos[0].getUrl()) : (this.props.place.icon);
+    //const photo = (this.props.place.photos) ? (this.props.place.photos[0].getUrl()) : (this.props.place.icon);
     window.scrollTo(0, 0);
     this.props.history.push({pathname:`/place/${this.props.place.id}`, 
                              state:{place:{
@@ -42,18 +42,22 @@ class PlaceDetailedCard extends Component {
                                name:this.props.place.name,
                                opening_hours: this.props.place.opening_hours,
                                rating:this.props.place.rating,
-                               vicinity:this.props.place.vicinity,
-                               photo:photo,
+                               address:this.props.place.address,
+                               photo_url:this.props.place.photo_url,
                                position:this.props.place.position,
+                               schedule:this.props.place.schedule,
+                               workers:this.props.place.workers,
                              }}}); 
   }
   
   render(){
+   //console.log(this.props.place);
+    const hoursSchedule = this.props.place.schedule.map(value => <p>{value.day.toUpperCase()} {value.start_hour} - {value.end_hour} </p>);
     return (
       <div id={this.props.id} className={this.props.className} onClick={this.goToProps}>
         {this.props.expandCard ? (<h1 className="nospace">{this.props.place.name}</h1>) : (<h2 className="nospace">{this.props.place.name}</h2>)}
-        <h4 className="nospace gray">{this.props.place.vicinity}</h4>
-        { this.props.place.photos ? ( <img className="image-card" src={this.props.place.photos[0].getUrl()}/>) : <img  className="image-card" src={this.props.place.photo}/>}
+        <h4 className="nospace gray">{this.props.place.address}</h4>
+        <img  className="image-card" src={this.props.place.photo_url}/>
         <hr/>
         <h3 className="margin10">Services</h3> 
          { this.props.expandCard &&  
@@ -92,13 +96,7 @@ class PlaceDetailedCard extends Component {
               SCHEDULE 
             </button>
             <h3>Hours</h3>
-            <p>Monday 7am - 5pm </p>
-            <p>Tuesday 7am - 5pm </p>
-            <p>Wednesday 7am - 5pm </p>
-            <p>Thursday 7am - 5pm </p>
-            <p>Friday 7am - 5pm </p>
-            <p>Saturday 7am - 5pm </p>
-            <p>Sunday 7am - 5pm </p> 
+            {hoursSchedule}
             <div>
             <h2>Location</h2>
               <div id="map-detail"></div>
