@@ -18,8 +18,7 @@ class Register extends Component {
     this.savePhotoInCache = this.savePhotoInCache.bind(this);
     this.addPhoto = this.addPhoto.bind(this);
     this.attemptRegister = this.attemptRegister.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.uploadImage = this.uploadImage.bind(this);
+    this.handleChange = this.handleChange.bind(this);  
   }
 
   attemptRegister(event) {

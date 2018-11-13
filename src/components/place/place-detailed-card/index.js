@@ -35,19 +35,24 @@ class PlaceDetailedCard extends Component {
   
   goToProps(){
     //const photo = (this.props.place.photos) ? (this.props.place.photos[0].getUrl()) : (this.props.place.icon);
-    window.scrollTo(0, 0);
-    this.props.history.push({pathname:`/place/${this.props.place.id}`, 
-                             state:{place:{
-                               id:this.props.place.id, 
-                               name:this.props.place.name,
-                               opening_hours: this.props.place.opening_hours,
-                               rating:this.props.place.rating,
-                               address:this.props.place.address,
-                               photo_url:this.props.place.photo_url,
-                               position:this.props.place.position,
-                               schedule:this.props.place.schedule,
-                               workers:this.props.place.workers,
-                             }}}); 
+    if(this.props.location.pathname === '/'){
+      window.scrollTo(0, 0); 
+      this.props.history.push(
+        {pathname:`/place/${this.props.place.id}`, 
+          state:{
+          place:{
+          id:this.props.place.id, 
+          name:this.props.place.name,
+          opening_hours: this.props.place.opening_hours,
+          rating:this.props.place.rating,
+          address:this.props.place.address,
+          photo_url:this.props.place.photo_url,
+          position:this.props.place.position,
+          schedule:this.props.place.schedule,
+          workers:this.props.place.workers,
+          }}}); 
+    }
+    
   }
   
   render(){

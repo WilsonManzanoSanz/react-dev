@@ -6,6 +6,7 @@ class PlaceService {
     this.postPlace = this.postPlace.bind(this);
     this.getPlaces = this.getPlaces.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
+    this.getPlace = this.getPlace.bind(this);
     console.log('Initialize PlaceService...');
   }
   
@@ -21,6 +22,12 @@ class PlaceService {
 
   getPlaces() {
     return fetch(`${hosting}/api/v1/establishments/`, 
+          {method:'GET'}).then(response => response.json())
+    .catch(error => console.error(error));
+  }
+  
+   getPlace(id) {
+    return fetch(`${hosting}/api/v1/establishments/${id}`, 
           {method:'GET'}).then(response => response.json())
     .catch(error => console.error(error));
   }

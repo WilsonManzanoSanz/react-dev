@@ -47,7 +47,7 @@ class PlacePost extends Component {
   }
 
   uploadPhoto(){
-    const fileInput = document.getElementById('add-photo');
+    const fileInput = document.getElementById('file-newplace');
     fileInput.click();
     fileInput.addEventListener('change', (e) => this.savePhotoInCache(e.target.files[0]));
   }

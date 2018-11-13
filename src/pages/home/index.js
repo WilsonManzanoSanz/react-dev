@@ -89,7 +89,7 @@ class Home extends Component {
   render(){
     const listPlaces = this.state.results.map((value) => {
       value.position = { lat: value.latitude , lng: value.longitude };
-      return (<PlaceDetailedCard key={value.name} place={value} />);
+      return (<PlaceDetailedCard key={value.id} place={value} />);
     });
     console.log(this.state.results);
     return (
