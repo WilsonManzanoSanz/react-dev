@@ -1,7 +1,7 @@
 import firebase from '../database/firebase';
 import store from '../redux/store';
 import { addUser } from "../redux/actions/actions";
-import { host , headers } from './constants/constant';
+import { hosting , headers } from './constants/constant';
 
 /* const headers = {
   'Access-Control-Allow-Origin':'*',
@@ -32,8 +32,8 @@ class AuthService {
   initializeUser(){
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        if (localStorage.getItem(`user_${user.uid}`)) {
-          this.user = JSON.parse(localStorage.getItem(`user_${user.uid}`));
+        if (localStorage.getItem(`user_${user.id}`)) {
+          this.user = JSON.parse(localStorage.getItem(`user_${user.id}`));
           console.log('User is logged', this.user);
           store.dispatch(addUser(this.user));
         } else {
@@ -65,7 +65,7 @@ class AuthService {
           displayName:result.user.displayName,
           email: result.user.email,
           photoURL: result.user.photoURL,
-          uid: result.user.uid,
+          id: result.user.id,
         };
         this.registerUser(newUser).then(response => console.log(response)).catch(error => console.error(error));
         resolve(result);
@@ -89,7 +89,7 @@ class AuthService {
           displayName:result.user.displayName,
           email: result.user.email,
           photoURL: result.user.photoURL,
-          uid: result.user.uid,
+          id: result.user.id,
         };
         this.registerUser(newUser).then(response => console.log(response)).catch(error => console.error(error));
         resolve(result);
@@ -104,7 +104,7 @@ class AuthService {
   }
 
   getUserFromServer(user) {
-    return fetch(`${host}/api/users/${user.uid}`,
+    return fetch(`${hosting}/api/v1/users/${user.id4}`,
         {
       mode: 'cors',
       headers: headers
@@ -112,8 +112,8 @@ class AuthService {
   }
 
   registerUser(user) {
-    const newUser = {...user, uid: firebase.auth().currentUser.uid};
-    return fetch(`${host}/api/users/`,
+    const newUser = {...user, id: firebase.auth().currentUser.id};
+    return fetch(`${hosting}/api/v1/users/`,
         {
       method: 'POST',
       headers: headers,
@@ -125,7 +125,7 @@ class AuthService {
   saveUser(user){
     console.log('User is logged', user);
     this.user = user;
-    localStorage.setItem(`user_${user.uid}`, JSON.stringify(this.user));
+    localStorage.setItem(`user_${user.id}`, JSON.stringify(this.user));
     store.dispatch(addUser(this.user));
   }
 
@@ -148,10 +148,10 @@ class AuthService {
     });
   }
   
-  uploadImage(uid, file) {
+  uploadImage(id, file) {
     // Create a root reference
     return new Promise((resolve, reject) => {
-      const  storageRef = firebase.storage().ref().child(`photo/${uid}`);
+      const  storageRef = firebase.storage().ref().child(`photo/${id}`);
       storageRef.put(file).then((snapshot)=> {
         snapshot.ref.getDownloadURL().then(downloadURL => resolve(downloadURL)).catch(error => reject(error));
       });
@@ -161,7 +161,7 @@ class AuthService {
   signOut(){
     return firebase.auth().signOut().then(()=> {
       // Sign-out successful.
-      localStorage.getItem(`user_${this.user.uid}`);
+      localStorage.getItem(`user_${this.user.id}`);
     }).catch((error) => {
       console.error(error);
       // An error happened.

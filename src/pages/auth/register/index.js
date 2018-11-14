@@ -19,36 +19,51 @@ class Register extends Component {
     this.addPhoto = this.addPhoto.bind(this);
     this.attemptRegister = this.attemptRegister.bind(this);
     this.handleChange = this.handleChange.bind(this);  
+    this.confirmPassword = this.confirmPassword.bind(this);
+  }
+  
+  componentDidMount(){
+    this.fileInput = document.getElementById('add-photo');
+    this.image = document.getElementById('preview-image');
   }
 
   attemptRegister(event) {
     event.preventDefault();
     const displayName = this.state.displayName;
     const file = this.photo;
-    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
-      const newUser = {
-        email: response.user.uid,
-        uid: response.user.uid,
-        displayName: this.state.displayName,
-        photoURL:'',
-      };
-      if (this.photo){
-        auth.uploadImage(response.user.uid, this.photo).then((URL) => {
-          newUser.photoURL = URL;
+    if(this.state.password === this.state.password_confirmation){
+        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
+        const newUser = {
+          email: this.state.email,
+          uid: response.user.uid,
+          //displayName: this.state.displayName,
+          name:this.state.displayName,
+          //photoURL:'',
+          photo_url: '',
+          password:this.state.password,
+          role_vp:2,
+        };
+        if (this.photo){
+          auth.uploadImage(response.user.uid, this.photo).then((URL) => {
+            //newUser.photoURL = URL;
+            newUser.photo_url = URL;
+            this.registerUser(newUser);
+          }).catch(error => console.error(error));
+        } else {
           this.registerUser(newUser);
-        }).catch(error => console.error(error));
-      } else {
-        this.props.history.push('/');
-      }
-    }).catch(error => {
-      console.error(error);
-      this.setState({errorMessage: error.message});
-    });
+          this.props.history.push('/');
+        }
+      }).catch(error => {
+        console.error(error);
+        this.setState({errorMessage: error.message});
+      });
+    }  
   }
 
   registerUser(newUser){
     auth.registerUser(newUser).then(response=>{
-      if(response.success){
+      console.log(response);
+      if(response.status){
         auth.saveUser(response.data);
         this.props.history.push('/');
       }
@@ -58,15 +73,34 @@ class Register extends Component {
   handleChange(name, value){
     this.setState({[name]:value});
   }
+  
+  confirmPassword (name, value, event){
+    this.setState({[name]:value});
+    if( value !== this.state.password){
+      event.classList.add('invalid');
+    }else {
+      event.classList.remove('invalid');
+    }
+    
+  }
 
   savePhotoInCache(file) {
     this.photo = file;
+    let reader  = new FileReader();
+    reader.onload =  () => {
+      this.image.style.display = 'block';
+      this.image.src = reader.result;
+    }
+    if (file) {
+      reader.readAsDataURL(file);
+    } else {
+      this.image.src = "";
+    }
   }
 
   addPhoto(){
-    const fileInput = document.getElementById('add-photo');
-    fileInput.click();
-    fileInput.addEventListener('change', (e) => this.savePhotoInCache(e.target.files[0]));
+    this.fileInput.click();
+    this.fileInput.addEventListener('change', (e) => this.savePhotoInCache(e.target.files[0]));
   }
   
   render(){
@@ -105,6 +139,18 @@ class Register extends Component {
               minlength="6"
               onChange={this.handleChange}
             />
+            <Input
+              id="register-password2"
+              name="password_confirmation"
+              placeholder="Repite tu password"
+              className="input-width"
+              type="password"
+              required={true}
+              minlength="6"
+              onChange={this.confirmPassword}
+            />
+            <br/>
+            <img src="" className="nodisplay" height="200" alt="Image preview..." id="preview-image"/>
             { this.state.errorMessage && <h4 className="center-text red">{this.state.errorMessage} </h4>}
             <input className="nodisplay" id="add-photo" type="file"/>
             <button  className="center-button margin-top raised" type="button" onClick={this.addPhoto}> 

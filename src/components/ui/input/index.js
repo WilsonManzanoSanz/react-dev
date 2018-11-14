@@ -11,7 +11,7 @@ class Input extends Component {
   handleChange(event) {
       event.target.classList.add('touched');
       this.setState({value: event.target.value});
-      this.props.onChange(this.props.name , event.target.value);
+      this.props.onChange(this.props.name , event.target.value, event.target);
     }
  
   render(){

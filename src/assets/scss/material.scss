@@ -146,6 +146,10 @@ button.raised {
 .input:focus:required:valid{
    outline-color: $primary-color;
 }
+.input.invalid{
+   outline-color:  red !important;
+   border-bottom: 1px solid red !important;
+}
 
 
 @media only screen and (min-width: 799px) and (max-width: 1199px)  {
