@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { connect } from "react-redux";
 import {auth}  from './../../services/auth';
-import {PlacePost} from '../../components/place/place-post';
+import PlacePost from '../../components/place/place-post';
 
 class PostPlace extends Component {
   constructor(props){

@@ -32,8 +32,8 @@ class AuthService {
   initializeUser(){
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        if (localStorage.getItem(`user_${user.id}`)) {
-          this.user = JSON.parse(localStorage.getItem(`user_${user.id}`));
+        if (localStorage.getItem(`user_${user.email}`)) {
+          this.user = JSON.parse(localStorage.getItem(`user_${user.email}`));
           console.log('User is logged', this.user);
           store.dispatch(addUser(this.user));
         } else {
@@ -104,7 +104,7 @@ class AuthService {
   }
 
   getUserFromServer(user) {
-    return fetch(`${hosting}/api/v1/users/${user.id4}`,
+    return fetch(`${hosting}/api/v1/users/${user.email}`,
         {
       mode: 'cors',
       headers: headers
@@ -125,7 +125,7 @@ class AuthService {
   saveUser(user){
     console.log('User is logged', user);
     this.user = user;
-    localStorage.setItem(`user_${user.id}`, JSON.stringify(this.user));
+    localStorage.setItem(`user_${user.email}`, JSON.stringify(this.user));
     store.dispatch(addUser(this.user));
   }
 

@@ -26,10 +26,11 @@ class Home extends Component {
   componentDidMount(){
     map = new window.google.maps.Map(document.getElementById('map'), {
       center: this.state.position,
-      zoom: 15
+      zoom: 15,
+      gestureHandling: "greedy",
     });
     
-    const places= new window.google.maps.places.PlacesService(map);
+    // const places= new window.google.maps.places.PlacesService(map);
     
     placeService.getPlaces().then(response => {
            this.addPlaces(response.data, response.status);
