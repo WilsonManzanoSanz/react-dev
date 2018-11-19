@@ -33,7 +33,8 @@ class Home extends Component {
     // const places= new window.google.maps.places.PlacesService(map);
     
     placeService.getPlaces().then(response => {
-           this.addPlaces(response.data, response.status);
+           console.log(response);
+           this.addPlaces(response, true);
       }).catch(error => console.error(error));
     
     /*places.nearbySearch(
@@ -45,12 +46,15 @@ class Home extends Component {
   }
  
   addPlaces(results, status){
-    this.setState(() => {return {results:results}});
+    
     //if (status === window.google.maps.places.PlacesServiceStatus.OK) {
     if (status) {
       for (let i = 0; i < results.length; i++) {
+        //results[i].latitude = parseFloat(results[i].latitude);
+        //results[i].longitude = parseFloat(results[i].longitude);
         this.createMarker(results[i]);
       }
+      this.setState(() => {return {results:results}});
     }
   }
   

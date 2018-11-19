@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import {UserHeader} from '../user-header';
 import PropTypes from 'prop-types';
 import { withRouter } from "react-router-dom";
+import { Input } from '../../ui/input';
 
 import './style.scss';
 let map;
@@ -13,7 +14,7 @@ let map;
 class ProfileCard extends Component {
   constructor(props){
     super(props);
-
+    this.handleChange = this.handleChange.bind(this);
     this.goToAddNewPlace = this.goToAddNewPlace.bind(this);
   }
   
@@ -32,6 +33,10 @@ class ProfileCard extends Component {
     this.props.history.push('/newplace');
   }
   
+   handleChange(name, value){
+    this.setState({[name]:value});
+  }
+  
   render(){
     return (
     <div className="center-card" id="profile-card">
@@ -43,6 +48,17 @@ class ProfileCard extends Component {
         <div id="map-detail-user"></div>
         <button className=" center-button" type="button" id="button-newplace" onClick={this.goToAddNewPlace}>ADD NEW PLACE</button>
       </div>
+      <p>Añade a una persona</p>
+      <Input
+        id="search-person-input"
+        name="person"
+        placeholder="Ingresa el nombre de la persona"
+        className="input-width padding20"
+        type="text"
+        required={true}
+        minlength="6"
+        onChange={this.handleChange}
+      />
     </div>);
   }
 }

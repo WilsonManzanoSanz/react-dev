@@ -23,12 +23,25 @@ class PlaceService {
   getPlaces() {
     return fetch(`${hosting}/api/v1/establishments/`, 
           {method:'GET'}).then(response => response.json())
+      .then(responseJSON => {
+        const mapResponse = responseJSON.data.map(value => {
+        value.latitude = parseFloat(value.latitude);
+        value.longitude = parseFloat(value.longitude);
+          return value;
+        });
+        return mapResponse;
+      })
     .catch(error => console.error(error));
   }
   
    getPlace(id) {
     return fetch(`${hosting}/api/v1/establishments/${id}`, 
           {method:'GET'}).then(response => response.json())
+     .then(value => {
+      value.data.latitude = parseFloat(value.data.latitude);
+      value.data.longitude = parseFloat(value.data.longitude);
+      return value;
+    })
     .catch(error => console.error(error));
   }
   

@@ -25,6 +25,7 @@ class PlaceCard extends Component {
                                photo_url:this.props.place.photo_url,
                                schedule:this.props.place.schedule,
                                workers:this.props.place.workers,
+                               position:this.props.place.position,
                              }}}); 
   }
   
