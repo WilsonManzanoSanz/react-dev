@@ -7,6 +7,7 @@ import {UserHeader} from '../user-header';
 import PropTypes from 'prop-types';
 import { withRouter } from "react-router-dom";
 import { Input } from '../../ui/input';
+import {auth} from '../../../services/auth';
 
 import './style.scss';
 let map;
@@ -33,7 +34,14 @@ class ProfileCard extends Component {
     this.props.history.push('/newplace');
   }
   
-   handleChange(name, value){
+   async handleChange(name, value){
+    let promise = setTimeout(() => {
+      if(value != this.state[name]){
+        auth.getAllTheUsers(value, 0).then(response => console.log(response))
+        .catch(error => console.error(error));
+      }
+    }, 300);
+    let result = await promise; 
     this.setState({[name]:value});
   }
   

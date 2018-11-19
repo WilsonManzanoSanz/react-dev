@@ -24,19 +24,21 @@ class AuthService {
     this.googleSignIn = this.googleSignIn.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
     this.saveUser = this.saveUser.bind(this);
+    this.loginWithEmailAndPassword = this.loginWithEmailAndPassword.bind(this);
     console.log('Initialize AuthService...');
     this.request = null;
     this.loading = false;
   }
 
   initializeUser(){
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        if (localStorage.getItem(`user_${user.email}`)) {
-          this.user = JSON.parse(localStorage.getItem(`user_${user.email}`));
+    //firebase.auth().onAuthStateChanged((user) => {
+      //if (user) {
+        if (localStorage.getItem(`loggedUser`)) {
+          this.user = JSON.parse(localStorage.getItem(`loggedUser`));
+          headers.Authorization = `Token ${this.user.api_token}`;
           console.log('User is logged', this.user);
           store.dispatch(addUser(this.user));
-        } else {
+        }/* else {
           if(!this.loading){
             this.loading = true;
             this.getUserFromServer(user).then(responseUser => {
@@ -53,7 +55,7 @@ class AuthService {
           }
         }
       }
-    }, error => console.error(error));
+    }, error => console.error(error));*/
   }
 
   googleSignIn(){
@@ -102,9 +104,30 @@ class AuthService {
       });
     });
   }
+  
+  
+  loginWithEmailAndPassword(email, password){
+    return new Promise((resolve, reject) => {
+      firebase.auth().signInWithEmailAndPassword(email, password).then((response)=>{
+         fetch(`${hosting}/api/v1/auth/login`,
+            {
+          method: 'POST',
+          headers: headers,
+          body:JSON.stringify({email:email, password:password})
+        }).then(response => {
+           resolve(response.json());
+           return response.json();
+         }
+        ).catch(error=> console.error(error));
+      }).catch(error => {
+        console.error(error);
+        reject(error);
+      });
+    });
+  }
 
   getUserFromServer(user) {
-    return fetch(`${hosting}/api/v1/users/${user.email}`,
+    return fetch(`${hosting}/api/v1/users/${user.id}`,
         {
       mode: 'cors',
       headers: headers
@@ -123,9 +146,9 @@ class AuthService {
   }
   
   saveUser(user){
-    console.log('User is logged', user);
     this.user = user;
-    localStorage.setItem(`user_${user.email}`, JSON.stringify(this.user));
+    headers.Authorization = `Token ${user.api_token}`;
+    localStorage.setItem(`loggedUser`, JSON.stringify(this.user));
     store.dispatch(addUser(this.user));
   }
 
@@ -146,6 +169,13 @@ class AuthService {
       });
   
     });
+  }
+  
+  getAllTheUsers(name, role = 0){
+    const url = new URL(`${hosting}/api/v1/users`);
+    const params = { name: name, role: role};
+    url.search = new URLSearchParams(params)
+    return fetch(url).then(response => response.json());
   }
   
   uploadImage(id, file) {

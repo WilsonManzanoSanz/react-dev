@@ -24,12 +24,11 @@ class Login extends Component {
 
   attemptLogin(event) {
     event.preventDefault();
-    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
-      this.props.addUser(response);
+    auth.loginWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
+      auth.saveUser(response.data);
       this.setState = {form: {}};
       this.props.history.push('/profile');
     }).catch(error => {
-      console.error(error);
       this.setState({errorMessage: error.message});
     });
   }
