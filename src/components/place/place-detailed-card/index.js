@@ -56,8 +56,11 @@ class PlaceDetailedCard extends Component {
   }
   
   render(){
+    let hoursSchedule = null;
+    if(this.props.place.schedule){
+       hoursSchedule = this.props.place.schedule.map(value => <p>{value.day.toUpperCase()} {value.start_hour} - {value.end_hour} </p>);
+    }
    //console.log(this.props.place);
-    const hoursSchedule = this.props.place.schedule.map(value => <p>{value.day.toUpperCase()} {value.start_hour} - {value.end_hour} </p>);
     return (
       <div id={this.props.id} className={this.props.className} onClick={this.goToProps}>
         {this.props.expandCard ? (<h1 className="nospace">{this.props.place.name}</h1>) : (<h2 className="nospace">{this.props.place.name}</h2>)}
@@ -97,9 +100,12 @@ class PlaceDetailedCard extends Component {
         </div>
         { this.props.expandCard &&
           <div>
-            <button  className="center-button schedule-button" type="button" onClick={(e) => this.goToStaffs(e)}>
+          {!this.props.editMode ? (<button  className="center-button schedule-button" type="button" onClick={(e) => this.goToStaffs(e)}>
               SCHEDULE 
-            </button>
+            </button>) : (<button  className="center-button schedule-button" type="button" onClick={() => console.log('edit')}>
+              EDIT 
+            </button>)
+            }
             <h3>Hours</h3>
             {hoursSchedule}
             <div>
@@ -118,6 +124,7 @@ PlaceDetailedCard.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
   expandCard: PropTypes.bool,
+  editMode: PropTypes.bool,
 };
 
 PlaceDetailedCard.defaultProps = {
@@ -125,6 +132,8 @@ PlaceDetailedCard.defaultProps = {
   delete: false,
   closeItself: () => 0,
   expandCard: false,
+  editMode: false,
+  place: {schedule:[], workers:[]},
 };
 
 export default withRouter(PlaceDetailedCard);

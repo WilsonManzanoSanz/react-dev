@@ -25,7 +25,8 @@ class Login extends Component {
   attemptLogin(event) {
     event.preventDefault();
     auth.loginWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
-      auth.saveUser(response.data);
+      console.log(response);
+      auth.saveUser(response);
       this.setState = {form: {}};
       this.props.history.push('/profile');
     }).catch(error => {

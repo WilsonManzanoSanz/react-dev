@@ -11,11 +11,11 @@ class Profile extends Component {
     super(props);
     this.state = {user:{displayName:''}};
     this.addNewPlace = this.addNewPlace.bind(this);
-    auth.getCurrentUser().then(user=>{
+    /*auth.getCurrentUser().then(user=>{
       if(user){
         this.setState({user:user}); 
       }
-    }).catch(error=>console.error(error));
+    }).catch(error=>console.error(error));*/
     this.signOut = this.signOut.bind(this);
   }
   

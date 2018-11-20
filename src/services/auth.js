@@ -107,23 +107,20 @@ class AuthService {
   
   
   loginWithEmailAndPassword(email, password){
-    return new Promise((resolve, reject) => {
-      firebase.auth().signInWithEmailAndPassword(email, password).then((response)=>{
-         fetch(`${hosting}/api/v1/auth/login`,
+     //Promise((resolve, reject) => {
+      //firebase.auth().signInWithEmailAndPassword(email, password).then((response)=>{
+       return fetch(`${hosting}/api/v1/auth/login`,
             {
           method: 'POST',
           headers: headers,
           body:JSON.stringify({email:email, password:password})
-        }).then(response => {
-           resolve(response.json());
-           return response.json();
-         }
-        ).catch(error=> console.error(error));
-      }).catch(error => {
+        }).then(response =>  response.json())
+      .catch(error => console.error(error));
+      /*}).catch(error => {
         console.error(error);
         reject(error);
       });
-    });
+    });*/
   }
 
   getUserFromServer(user) {
@@ -146,7 +143,10 @@ class AuthService {
   }
   
   saveUser(user){
-    this.user = user;
+    this.user = user.user;
+    this.user.establishment = user.establishment;
+    this.user.establishment.schedule = user.establishment.establishment_schedule;
+    this.user.establishment.position = {lat: parseFloat(user.establishment.latitude), lng: parseFloat(user.establishment.longitude)};
     headers.Authorization = `Token ${user.api_token}`;
     localStorage.setItem(`loggedUser`, JSON.stringify(this.user));
     store.dispatch(addUser(this.user));
@@ -167,15 +167,16 @@ class AuthService {
           }
         }
       });
-  
     });
   }
   
-  getAllTheUsers(name, role = 0){
+  getAllTheUsers(name, role = 'admin'){
     const url = new URL(`${hosting}/api/v1/users`);
-    const params = { name: name, role: role};
+    const params = { name: name, not_role: role};
     url.search = new URLSearchParams(params)
-    return fetch(url).then(response => response.json());
+    return fetch(url,
+                {headers:headers,
+                }).then(response => response.json());
   }
   
   uploadImage(id, file) {
@@ -191,7 +192,7 @@ class AuthService {
   signOut(){
     return firebase.auth().signOut().then(()=> {
       // Sign-out successful.
-      localStorage.getItem(`user_${this.user.id}`);
+      localStorage.removeItem(`loggedUser`);
     }).catch((error) => {
       console.error(error);
       // An error happened.

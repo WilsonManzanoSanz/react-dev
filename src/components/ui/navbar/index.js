@@ -27,7 +27,7 @@ class Navbar extends Component{
     this.elemContent = '';
     this.elemNav = '';  
     this.showMenu = this.showMenu.bind(this);
-    auth.getCurrentUser().then(user=>this.setState({user:user})).catch(error=>console.error(error));
+    //auth.getCurrentUser().then(user=>this.setState({user:user})).catch(error=>console.error(error));
   }
 
   goTo(path){
