@@ -33,7 +33,7 @@ class Home extends Component {
     // const places= new window.google.maps.places.PlacesService(map);
     
     placeService.getPlaces().then(response => {
-           console.log(response);
+           console.log('places',response);
            this.addPlaces(response, true);
       }).catch(error => console.error(error));
     
@@ -96,7 +96,6 @@ class Home extends Component {
       value.position = { lat: value.latitude , lng: value.longitude };
       return (<PlaceDetailedCard key={value.id} place={value} />);
     });
-    console.log(this.state.results);
     return (
       <div className="google-maps" id="google-maps">
         { this.state.place && <PlaceCard id="map-marker" place={this.state.place} delete={true} closeItself={this.hideDetials}/>}

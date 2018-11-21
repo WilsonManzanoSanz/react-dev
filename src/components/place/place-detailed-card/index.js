@@ -33,12 +33,15 @@ class PlaceDetailedCard extends Component {
                              state:{id:this.props.place.id, workers:this.props.place.workers}});
   }
   
-  goToProps(){
+  goToProps(e, path){
+    console.log(path);
+     e.stopPropagation(); 
     //const photo = (this.props.place.photos) ? (this.props.place.photos[0].getUrl()) : (this.props.place.icon);
-    if(this.props.location.pathname === '/'){
-      window.scrollTo(0, 0); 
+    if(this.props.location.pathname === '/' || this.props.location.pathname === '/profile'){
+      window.scrollTo(0, 0);
+    }
       this.props.history.push(
-        {pathname:`/place/${this.props.place.id}`, 
+        {pathname:path, 
           state:{
           place:{
           id:this.props.place.id, 
@@ -51,7 +54,6 @@ class PlaceDetailedCard extends Component {
           schedule:this.props.place.schedule,
           workers:this.props.place.workers,
           }}}); 
-    }
     
   }
   
@@ -62,7 +64,7 @@ class PlaceDetailedCard extends Component {
     }
    //console.log(this.props.place);
     return (
-      <div id={this.props.id} className={this.props.className} onClick={this.goToProps}>
+      <div id={this.props.id} className={this.props.className} onClick={(e) => this.goToProps(e, `/place/${this.props.place.id}`)}>
         {this.props.expandCard ? (<h1 className="nospace">{this.props.place.name}</h1>) : (<h2 className="nospace">{this.props.place.name}</h2>)}
         <h4 className="nospace gray">{this.props.place.address}</h4>
         <img  className="image-card" src={this.props.place.photo_url}/>
@@ -102,7 +104,7 @@ class PlaceDetailedCard extends Component {
           <div>
           {!this.props.editMode ? (<button  className="center-button schedule-button" type="button" onClick={(e) => this.goToStaffs(e)}>
               SCHEDULE 
-            </button>) : (<button  className="center-button schedule-button" type="button" onClick={() => console.log('edit')}>
+            </button>) : (<button  className="center-button edit-button" type="button" onClick={(e) => this.goToProps(e, '/newplace')}>
               EDIT 
             </button>)
             }

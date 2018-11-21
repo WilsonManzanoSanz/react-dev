@@ -16,7 +16,6 @@ let map;
 class ProfileCard extends Component {
   constructor(props){
     super(props);
-    this.handleChange = this.handleChange.bind(this);
     this.goToAddNewPlace = this.goToAddNewPlace.bind(this);
     this.state = {person:null, people: []};
     this.status = false;
@@ -41,23 +40,6 @@ class ProfileCard extends Component {
     this.props.history.push('/newplace');
   }
   
-  handleChange(name, value){
-    if(this.status === false && value != this.state[name]){
-      this.status = true;
-      setTimeout(() => {
-          this.status = false;
-          auth.getAllTheUsers(value).then(response => this.setState({people:response.data}))
-          .catch(error => console.error(error));
-      }, 300);
-    }
-    setTimeout((value) => {
-          if(value == this.state[name]){
-            auth.getAllTheUsers(value).then(response => this.setState({people:response.data}))
-            .catch(error => console.error(error));
-          }
-      }, 300, value);
-    this.setState({[name]:value});
-  }
   
   render(){
     const people = this.state.people.map(value => <div className="padding10 card"><p className="nospace">{value.name}</p><p className="gray nospace">{value.email}</p></div>)
@@ -78,18 +60,6 @@ class ProfileCard extends Component {
           <div>
             You have an establishment 
             <PlaceDetailedCard place={this.props.user.establishment} editMode="true" id={this.props.user.establishment.id} className="card" expandCard="true"/>                            
-            <p>Añade a una persona</p>
-            <Input
-              id="search-person-input"
-              name="person"
-              placeholder="Ingresa el nombre de la persona"
-              className="input-width padding20"
-              type="text"
-              required={true}
-              minlength="6"
-              onChange={this.handleChange}
-            />
-          {people}
           </div>
         }
       </div>

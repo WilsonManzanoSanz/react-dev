@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import PropTypes from 'prop-types';
 
 class Input extends Component {
   constructor(props){
     super(props);
-    this.state = {value: ''};
+    this.state = {value: this.props.value};
     this.handleChange = this.handleChange.bind(this);
+    
   }
   
   handleChange(event) {
@@ -29,6 +31,22 @@ class Input extends Component {
     />);
   }
 }
-  
+      
+Input.propTypes = {
+  value: PropTypes.string,
+  id: PropTypes.string,
+  type: PropTypes.string,
+  onChange: PropTypes.func,
+  minLength: PropTypes.number,
+  maxLength: PropTypes.number,
+  required: PropTypes.bool,
+  placeholder: PropTypes.string,
+};
+
+Input.defaultProps = {
+  value: '',
+  type: 'text',
+  required: false,
+};
 
 export {Input};

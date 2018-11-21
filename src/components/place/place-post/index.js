@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import { CardHeaderTittle } from '../../ui/cards-icon';
 import { placeService } from '../../../services/place';
 import { withRouter } from "react-router-dom";
-
+import {auth} from '../../../services/auth';
+import  Modal  from '../../ui/modal';
 import './style.scss';
 
 class PlacePost extends Component {
@@ -15,13 +16,27 @@ class PlacePost extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.uploadPhoto = this.uploadPhoto.bind(this);
     this.savePhotoInCache = this.savePhotoInCache.bind(this);
-    this.photo = null;
+    this.handleChangeSearch = this.handleChangeSearch.bind(this);
     this.changeMarker = this.changeMarker.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+    this.addRelation = this.addRelation.bind(this);
+    this.photo = null;
     this.marker = null;
     this.place = null;
+    this.userID = null;
+    this.state = {person:null, people: [], isOpen: false};
+  }
+  
+  toggleModal(e, userId) {
+    e.stopPropagation();
+    this.userID = (userId) ? userId: null;
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
   }
   
   componentDidMount(){
+    this.setState(this.props.place);
     const map = new window.google.maps.Map(document.getElementById('map-picker'), {
       center: {lat:10.9743, lng:-74.8033},
       zoom: 16,
@@ -141,7 +156,36 @@ class PlacePost extends Component {
     this.setState({[name]:value});
   }
   
-  render(place){
+  handleChangeSearch(name, value){
+    if(this.status === false && value != this.state[name]){
+      this.status = true;
+      setTimeout(() => {
+          this.status = false;
+          auth.getAllTheUsers(value).then(response => this.setState({people:response.data}))
+          .catch(error => console.error(error));
+      }, 300);
+    }
+    setTimeout((value) => {
+          if(value == this.state[name]){
+            auth.getAllTheUsers(value).then(response => this.setState({people:response.data}))
+            .catch(error => console.error(error));
+          }
+      }, 300, value);
+    this.setState({[name]:value});
+  }
+  
+  addRelation() {
+    placeService.relationPlace(this.userID, this.props.place.id).then(response => {
+      console.log(response);
+      this.setState({
+        isOpen: !this.state.isOpen
+      });
+    }).catch(error => console.error(error));
+  }
+  
+  render(){
+    let classPlace = (this.props.place.photo_url) ? 'center' : 'nodisplay'; 
+    const people = this.state.people.map(value => <div className="padding10 card" onClick={(e) => this.toggleModal(e, value.id)}><p className="nospace">{value.name}</p><p className="gray nospace">{value.email}</p></div>)
     return (
        <div className="center-card">
         <div className="card">  
@@ -150,12 +194,13 @@ class PlacePost extends Component {
             <p>Cuentanos sobre tu local</p>
             <Input
               id="place-name-input"
-              name="displayName"
+              name="name"
               placeholder="Ingresa el nombre del local"
               className="input-width padding20"
               type="text"
               minlength="6"
               required={true}
+              value={this.props.place.name}
               onChange={this.handleChange}
             />
             <Input
@@ -199,17 +244,39 @@ class PlacePost extends Component {
               <span id="place-name"  className="title"></span>
               <span id="place-address"></span>
             </div>
-            <img src="" className="nodisplay" height="200" alt="Image preview..." id="preview-image"/>
+            <img src={this.props.place.photo_url} className={classPlace} height="200" alt="Image preview..." id="preview-image" />
             <button type="button" className="center-button raised" onClick={this.uploadPhoto}>SUBIR FOTO</button>
             <button type="submit" className="center-button">AÑADIR LOCAL</button>
           </form>
+          { this.props.place.id &&  
+          <div>
+            You want to add a new user?
+            <Input
+              id="search-person-input"
+              name="person"
+              placeholder="Ingresa el nombre de la persona"
+              className="input-width padding20"
+              type="text"
+              required={true}
+              minlength="6"
+              onChange={this.handleChangeSearch}
+            />
+          {people}
+          </div>
+        }
         </div>
+       <Modal show={this.state.isOpen}
+          onClose={this.toggleModal} minHeight={150}>
+          <p>Do yo really want to add this user to your establishment?</p>
+          <button type="button" className="center-button" onClick={this.addRelation}>ADD</button>
+        </Modal>
        </div>);
   }
 }
 
 PlacePost.propTypes = {
   user: PropTypes.object,
+  place: PropTypes.object,
 };
       
 PlacePost.defaultProps = {

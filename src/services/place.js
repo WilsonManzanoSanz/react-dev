@@ -7,6 +7,7 @@ class PlaceService {
     this.getPlaces = this.getPlaces.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
     this.getPlace = this.getPlace.bind(this);
+    this.relationPlace = this.relationPlace.bind(this);
     console.log('Initialize PlaceService...');
   }
   
@@ -49,6 +50,16 @@ class PlaceService {
         return value;
     })
     .catch(error => console.error(error));
+  }
+  
+  relationPlace(userId, placeId, workerVp = 1){
+    return fetch(`${hosting}/api/v1/relations/`,
+        {
+      method: 'POST',
+      headers: headers,
+      body:JSON.stringify({user_id: userId, establishment_id: placeId, relation_type_vp: workerVp})
+    }).then(response => response.json()
+    ).catch(error=> console.error(error));
   }
   
   uploadImage(uid, file) {

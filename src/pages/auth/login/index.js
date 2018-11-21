@@ -25,10 +25,10 @@ class Login extends Component {
   attemptLogin(event) {
     event.preventDefault();
     auth.loginWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
-      console.log(response);
-      auth.saveUser(response);
+      console.log('loginResponse', response);
+      auth.saveUser(response.data);
       this.setState = {form: {}};
-      this.props.history.push('/profile');
+      this.props.history.push('/');
     }).catch(error => {
       this.setState({errorMessage: error.message});
     });
@@ -38,7 +38,7 @@ class Login extends Component {
     auth.googleSignIn().then(response =>  {
       this.props.addUser(response.user);
       this.setState = {form: {}};
-      this.props.history.push('/profile');
+      this.props.history.push('/');
     }).catch(error => {
       this.setState({errorMessage: error.message});
       console.error(error);
@@ -49,7 +49,7 @@ class Login extends Component {
     auth.fbSignIn().then(response =>  {
       this.props.addUser(response.user);
       this.setState = {form: {}};
-      this.props.history.push('/profile');
+      this.props.history.push('/');
     }).catch(error => {
       this.setState({errorMessage: error.message});
       console.error(error);

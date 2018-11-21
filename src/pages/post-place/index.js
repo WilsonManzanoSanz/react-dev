@@ -20,9 +20,10 @@ class PostPlace extends Component {
   }
   
   render(){
+    let place =  (this.props.location.state) ? this.props.location.state.place : {};
     return (
       <div>
-        <PlacePost user={this.props.user}/>
+        <PlacePost user={this.props.user} place={place}/>
       </div>);
   }
 }
