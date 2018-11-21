@@ -4,6 +4,7 @@ import firebase from '../database/firebase';
 class PlaceService {
   constructor(){
     this.postPlace = this.postPlace.bind(this);
+    this.putPlace = this.putPlace.bind(this);
     this.getPlaces = this.getPlaces.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
     this.getPlace = this.getPlace.bind(this);
@@ -15,6 +16,16 @@ class PlaceService {
     return fetch(`${hosting}/api/v1/establishments/`,
         {
       method: 'POST',
+      headers: headers,
+      body:JSON.stringify(place)
+    }).then(response => response.json()
+    ).catch(error=> console.error(error));
+  }
+  
+  putPlace(place) {
+    return fetch(`${hosting}/api/v1/establishments/${place.id}`,
+        {
+      method: 'PUT',
       headers: headers,
       body:JSON.stringify(place)
     }).then(response => response.json()

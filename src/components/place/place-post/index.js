@@ -106,25 +106,27 @@ class PlacePost extends Component {
   addNewPlace(event){
     event.preventDefault();
     const place = {
-      name:this.state.displayName,
+      name:this.state.name,
       description: this.state.description,
       address: this.state.address,
       photo_url:"https://i.ytimg.com/vi/83ACzjAY_8k/maxresdefault.jpg",
 	    latitude:this.marker.position.lat(),
 	    longitude:this.marker.position.lng(),
 	    uid:this.props.user.uid,
-      user_id:9
+      user_id:9,
+      id:this.props.place.id,
     };
+    let placePostFunction = (this.props.place.id) ? placeService.putPlace : placeService.postPlace;
     if(this.photo){
        placeService.uploadImage(this.props.user.uid, this.photo).then(response => {
          place.photo_url = response;
-         placeService.postPlace(place).then(response => {
+         placePostFunction(place).then(response => {
             console.log('places',response);
             this.props.history.push('/');
           }).catch(error => console.error(error));
       }).catch(error => console.error(error));
     } else {
-      placeService.postPlace(place).then(response => {
+      placePostFunction(place).then(response => {
             console.log('places',response);
             this.props.history.push('/');
       }).catch(error => console.error(error));
