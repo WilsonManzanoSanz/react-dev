@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import {  Route } from 'react-router-dom';
+import {  Route, Switch } from 'react-router-dom';
 // Pages
 import About from '../about';
 import {Home} from '../home';
@@ -12,6 +12,7 @@ import {Register} from '../auth/register';
 import Profile from '../auth/profile';
 import {ForgotPassword} from '../auth/forgot-password';
 import {UserProfiles} from '../auth/profiles';
+import {DefaultPage} from '../default-page';
 
 class Main extends Component {
   constructor(props){
@@ -21,20 +22,19 @@ class Main extends Component {
   render(){
     return (
     <div className="main-container" id="main-container" ref="main-container">
-      <Route exact path="/" component={Home} />
-      <Route path="/about" component={About} />
-     
-      <Route path="/login" component={Login} />
-      <Route path="/register" component={Register} />
-      <Route path="/profile" component={Profile} />
-      <Route path="/forgot-password" component={ForgotPassword} />
-      <Route path="/forgot-password" component={ForgotPassword} />
-      
-      <Route path="/place/:place" component={Place} />
-      <Route path="/schedule/:id" component={Schedules} />
-      <Route exact path="/staffs/:place" component={UserProfiles} />
-      <Route path="/newplace/" component={PostPlace} />
-      
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/about" component={About} />
+        <Route exact path="/auth/login" component={Login} />
+        <Route exact path="/auth/register" component={Register} />
+        <Route exact path="/auth/profile" component={Profile} />
+        <Route exact path="/auth/forgot-password" component={ForgotPassword} />
+        <Route path="/place/:place" component={Place} />
+        <Route path="/schedule/:id" component={Schedules} />
+        <Route path="/staffs/:place" component={UserProfiles} />
+        <Route path="/newplace/" component={PostPlace} />
+        <Route component={DefaultPage} />
+      </Switch> 
     </div>);
   }
 }

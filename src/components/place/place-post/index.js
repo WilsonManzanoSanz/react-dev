@@ -7,7 +7,10 @@ import { placeService } from '../../../services/place';
 import { withRouter } from "react-router-dom";
 import {auth} from '../../../services/auth';
 import  Modal  from '../../ui/modal';
+import { connect } from "react-redux";
+import { addUser } from "../../../redux/actions/actions";
 import './style.scss';
+
 
 class PlacePost extends Component {
   constructor(props){
@@ -20,6 +23,7 @@ class PlacePost extends Component {
     this.changeMarker = this.changeMarker.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.addRelation = this.addRelation.bind(this);
+    this.updateUser = this.updateUser.bind(this);
     this.photo = null;
     this.marker = null;
     this.place = null;
@@ -122,15 +126,24 @@ class PlacePost extends Component {
          place.photo_url = response;
          placePostFunction(place).then(response => {
             console.log('places',response);
+            this.updateUser(response);
             this.props.history.push('/');
           }).catch(error => console.error(error));
       }).catch(error => console.error(error));
     } else {
       placePostFunction(place).then(response => {
             console.log('places',response);
+            this.updateUser(response);
             this.props.history.push('/');
       }).catch(error => console.error(error));
     }
+  }
+  
+  updateUser(response){
+    let user = this.props.user;
+    user.establishment = response.data;
+    localStorage.setItem(`loggedUser`, JSON.stringify(user));
+    this.props.addUser(user );
   }
   
   savePhotoInCache(file) {
@@ -285,4 +298,10 @@ PlacePost.defaultProps = {
   user: {},
 };
       
-export default withRouter(PlacePost);
+const mapDispatchToProps = dispatch => {
+  return {
+    addUser: user => dispatch(addUser(user))
+  };
+};
+      
+export default withRouter(connect(mapDispatchToProps)(PlacePost));

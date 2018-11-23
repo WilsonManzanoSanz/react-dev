@@ -25,7 +25,7 @@ class Login extends Component {
   attemptLogin(event) {
     event.preventDefault();
     auth.loginWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
-      console.log('loginResponse', response);
+      console.log('loginResponse', response)
       auth.saveUser(response.data);
       this.setState = {form: {}};
       this.props.history.push('/');
@@ -99,10 +99,10 @@ class Login extends Component {
             <button  className="center-button margin-top" type="submit"> 
               INGRESAR 
             </button>
-            <button  className="center-button margin-top raised" type="button" onClick={() => this.goTo('/register')}>
+            <button  className="center-button margin-top raised" type="button" onClick={() => this.goTo('/auth/register')}>
               REGISTRAR 
             </button>
-            <button  className="center-button margin-top raised" type="button" onClick={() => this.goTo('/forgot-password')}>
+            <button  className="center-button margin-top raised" type="button" onClick={() => this.goTo('/auth/forgot-password')}>
               RECORDAR CONSTRASEÑA 
             </button>
         </form>

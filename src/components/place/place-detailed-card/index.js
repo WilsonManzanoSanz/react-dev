@@ -37,7 +37,7 @@ class PlaceDetailedCard extends Component {
     console.log(path);
      e.stopPropagation(); 
     //const photo = (this.props.place.photos) ? (this.props.place.photos[0].getUrl()) : (this.props.place.icon);
-    if(this.props.location.pathname === '/' || this.props.location.pathname === '/profile'){
+    if(this.props.location.pathname === '/' || this.props.location.pathname === 'auth/profile'){
       window.scrollTo(0, 0);
     }
       this.props.history.push(

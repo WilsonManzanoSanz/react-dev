@@ -113,13 +113,13 @@ class Navbar extends Component{
             { !this.state.isMobile && 
             listsItems}
             <li className="spacer"></li>
-            {!this.props.user.email && <li id='nav-login' onClick={this.onChangePath}><Link to='/login' >Login</Link></li>}
+            {!this.props.user.email && <li id='nav-login' onClick={this.onChangePath}><Link to='/auth/login' >Login</Link></li>}
             {this.props.user.email && <li id='nav-login'  onClick={this.showMenu}> 
             {
               this.state.showMenu
               ? (
               <div className="card menu">
-                <p className="pointer" onClick={()=>{this.goTo('/profile')}}> Profile </p>
+                <p className="pointer" onClick={()=>{this.goTo('/auth/profile')}}> Profile </p>
                 <p className="pointer" onClick={this.signOut}> Salir </p>
               </div>
               ): (null)

@@ -1,6 +1,6 @@
 import firebase from '../database/firebase';
 import store from '../redux/store';
-import { addUser } from "../redux/actions/actions";
+import { addUser, removeUser } from "../redux/actions/actions";
 import { hosting , headers } from './constants/constant';
 
 /* const headers = {
@@ -38,6 +38,7 @@ class AuthService {
           headers.Authorization = `Token ${this.user.api_token}`;
           console.log('User is logged', this.user);
           store.dispatch(addUser(this.user));
+          //store.dispatch(addUser({name:'Yuye'}));
         }/* else {
           if(!this.loading){
             this.loading = true;
@@ -144,9 +145,11 @@ class AuthService {
   
   saveUser(user){
     this.user = user.user;
-    this.user.establishment = user.establishment;
-    this.user.establishment.schedule = user.establishment_schedule;
-    this.user.establishment.position = {lat: parseFloat(user.establishment.latitude), lng: parseFloat(user.establishment.longitude)};
+    if(user.establishment){
+      this.user.establishment = user.establishment;
+      this.user.establishment.schedule = user.establishment_schedule;
+      this.user.establishment.position = {lat: parseFloat(user.establishment.latitude), lng: parseFloat(user.establishment.longitude)};
+    }
     headers.Authorization = `Token ${user.user.api_token}`;
     localStorage.setItem(`loggedUser`, JSON.stringify(this.user));
     store.dispatch(addUser(this.user));
