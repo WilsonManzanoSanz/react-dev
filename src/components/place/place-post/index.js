@@ -117,7 +117,7 @@ class PlacePost extends Component {
 	    latitude:this.marker.position.lat(),
 	    longitude:this.marker.position.lng(),
 	    uid:this.props.user.uid,
-      user_id:9,
+      user_id:this.props.user.id,
       id:this.props.place.id,
     };
     let placePostFunction = (this.props.place.id) ? placeService.putPlace : placeService.postPlace;
@@ -140,10 +140,8 @@ class PlacePost extends Component {
   }
   
   updateUser(response){
-    let user = this.props.user;
-    user.establishment = response.data;
-    localStorage.setItem(`loggedUser`, JSON.stringify(user));
-    this.props.addUser(user );
+    let user = {user: this.props.user, establishment:response.data, establishment_schedule:response.data.schedule};
+    auth.saveUser(user);
   }
   
   savePhotoInCache(file) {
@@ -191,7 +189,7 @@ class PlacePost extends Component {
   
   addRelation() {
     placeService.relationPlace(this.userID, this.props.place.id).then(response => {
-      console.log(response);
+      console.log('newRelation',response);
       this.setState({
         isOpen: !this.state.isOpen
       });
@@ -296,12 +294,6 @@ PlacePost.propTypes = {
       
 PlacePost.defaultProps = {
   user: {},
-};
+};  
       
-const mapDispatchToProps = dispatch => {
-  return {
-    addUser: user => dispatch(addUser(user))
-  };
-};
-      
-export default withRouter(connect(mapDispatchToProps)(PlacePost));
+export default withRouter((PlacePost));

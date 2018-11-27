@@ -133,24 +133,24 @@ class AuthService {
   }
 
   registerUser(user) {
-    const newUser = {...user, id: firebase.auth().currentUser.id};
+    //const newUser = {...user, id: firebase.auth().currentUser.id};
     return fetch(`${hosting}/api/v1/users/`,
         {
       method: 'POST',
       headers: headers,
-      body:JSON.stringify(newUser)
+      body:JSON.stringify(user)
     }).then(response => response.json()
     ).catch(error=> console.error(error));
   }
   
-  saveUser(user){
-    this.user = user.user;
-    if(user.establishment){
-      this.user.establishment = user.establishment;
-      this.user.establishment.schedule = user.establishment_schedule;
-      this.user.establishment.position = {lat: parseFloat(user.establishment.latitude), lng: parseFloat(user.establishment.longitude)};
+  saveUser({establishment, user,establishment_schedule}){
+    this.user = user
+    if(establishment){
+      this.user.establishment = establishment;
+      this.user.establishment.schedule = establishment_schedule;
+      this.user.establishment.position = {lat: parseFloat(establishment.latitude), lng: parseFloat(establishment.longitude)};
     }
-    headers.Authorization = `Token ${user.user.api_token}`;
+    headers.Authorization = `Token ${user.api_token}`;
     localStorage.setItem(`loggedUser`, JSON.stringify(this.user));
     store.dispatch(addUser(this.user));
   }

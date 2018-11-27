@@ -32,10 +32,10 @@ class Register extends Component {
     const displayName = this.state.displayName;
     const file = this.photo;
     if(this.state.password === this.state.password_confirmation){
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
+        //firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
         const newUser = {
           email: this.state.email,
-          uid: response.user.uid,
+          //uid: response.user.uid,
           //displayName: this.state.displayName,
           name:this.state.displayName,
           //photoURL:'',
@@ -44,7 +44,7 @@ class Register extends Component {
           role_vp:2,
         };
         if (this.photo){
-          auth.uploadImage(response.user.uid, this.photo).then((URL) => {
+          auth.uploadImage(this.state.email, this.photo).then((URL) => {
             //newUser.photoURL = URL;
             newUser.photo_url = URL;
             this.registerUser(newUser);
@@ -53,19 +53,24 @@ class Register extends Component {
           this.registerUser(newUser);
           this.props.history.push('/');
         }
-      }).catch(error => {
+      /*}).catch(error => {
         console.error(error);
         this.setState({errorMessage: error.message});
-      });
+      });*/
     }  
   }
 
   registerUser(newUser){
     auth.registerUser(newUser).then(response=>{
-      console.log(response);
       if(response.status){
-        auth.saveUser(response.data);
-        this.props.history.push('/');
+        // TODO THIS WILL WORK WHEN THE BACKEND SEND ME THE TOKEN
+        // auth.saveUser(response.data);
+        auth.loginWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
+          auth.saveUser(response.data);
+          this.props.history.push('/');
+        }).catch(error => {
+          this.setState({errorMessage: error.message});
+        });
       }
     }).catch(error => console.log(error));
   }
