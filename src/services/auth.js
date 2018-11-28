@@ -177,6 +177,7 @@ class AuthService {
     const url = new URL(`${hosting}/api/v1/users`);
     const params = { name: name, not_role: role};
     url.search = new URLSearchParams(params)
+    console.log(headers);
     return fetch(url,
                 {headers:headers,
                 }).then(response => response.json());
@@ -193,13 +194,15 @@ class AuthService {
   }
 
   signOut(){
-    return firebase.auth().signOut().then(()=> {
+    //return firebase.auth().signOut().then(()=> {
       // Sign-out successful.
       localStorage.removeItem(`loggedUser`);
-    }).catch((error) => {
+      store.dispatch(removeUser());
+      store.getState();
+    /*}).catch((error) => {
       console.error(error);
       // An error happened.
-    });
+    });*/
   }
 } 
 const auth = new AuthService();

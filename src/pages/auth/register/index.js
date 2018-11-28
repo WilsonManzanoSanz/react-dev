@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { CardHeaderTittle } from './../../../components/ui/cards-icon';
-import firebase from './../../../database/firebase';
+//import firebase from './../../../database/firebase';
 import {auth}  from './../../../services/auth';
 import { Input } from './../../../components/ui/input';
 
@@ -29,8 +29,6 @@ class Register extends Component {
 
   attemptRegister(event) {
     event.preventDefault();
-    const displayName = this.state.displayName;
-    const file = this.photo;
     if(this.state.password === this.state.password_confirmation){
         //firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
         const newUser = {
@@ -155,7 +153,7 @@ class Register extends Component {
               onChange={this.confirmPassword}
             />
             <br/>
-            <img src="" className="nodisplay" height="200" alt="Image preview..." id="preview-image"/>
+            <img src="" className="nodisplay" height="200" alt="preview..." id="preview-image"/>
             { this.state.errorMessage && <h4 className="center-text red">{this.state.errorMessage} </h4>}
             <input className="nodisplay" id="add-photo" type="file"/>
             <button  className="center-button margin-top raised" type="button" onClick={this.addPhoto}> 

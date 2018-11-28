@@ -1,4 +1,4 @@
-import { hosting, headers, host } from './constants/constant';
+import { hosting, headers,  } from './constants/constant';
 import firebase from '../database/firebase';
 
 class PlaceService {

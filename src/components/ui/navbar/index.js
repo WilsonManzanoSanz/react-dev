@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Avatar } from '../../auth/avatar';
 import { Link } from 'react-router-dom';
 import { uiService } from './../../../services/ui.service';
 import {auth}  from './../../../services/auth';
@@ -36,10 +35,10 @@ class Navbar extends Component{
   }
 
   signOut(){
-    auth.signOut().then( success => {
-      this.props.removeUser();
-      this.props.history.push('/');
-    }).catch( error => console.error(error));
+    auth.signOut();
+    this.props.removeUser();
+    this.props.history.push('/');
+    //}).catch( error => console.error(error));
   }
 
   closeMenu() {

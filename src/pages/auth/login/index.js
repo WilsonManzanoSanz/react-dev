@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import { connect } from "react-redux";
 import { CardHeaderTittle } from './../../../components/ui/cards-icon';
 import { Input } from './../../../components/ui/input';
-import firebase from './../../../database/firebase';
 import {auth}  from './../../../services/auth';
 import { addUser } from "./../../../redux/actions/actions";
 
@@ -93,8 +92,8 @@ class Login extends Component {
             <h4 className="center-text">Ingresa con </h4>
             { this.state.errorMessage && <h4 className="center-text red">{this.state.errorMessage} </h4>}
             <div className="center-flex" id="login-options">
-              <img onClick={this.googleSignIn} src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" className="icon pointer"/>
-              <img onClick={this.fbSignIn} src="https://upload.wikimedia.org/wikipedia/commons/c/c2/F_icon.svg" className="icon pointer"/>
+              <img onClick={this.googleSignIn} alt="google" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" className="icon pointer"/>
+              <img onClick={this.fbSignIn} alt="FB" src="https://upload.wikimedia.org/wikipedia/commons/c/c2/F_icon.svg" className="icon pointer"/>
             </div>
             <button  className="center-button margin-top" type="submit"> 
               INGRESAR 

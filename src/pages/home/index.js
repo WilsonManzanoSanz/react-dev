@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import  PlaceCard from '../../components/place/place-card';
 import  PlaceDetailedCard from '../../components/place/place-detailed-card';
-import { PlaceMarker } from '../../components/place/place-marker';
 import { Input } from '../../components/ui/input';
 import { placeService } from '../../services/place';
 
 import './style.scss';
 
 let map;
-let infowindow;
 
 class Home extends Component {
   constructor(props){

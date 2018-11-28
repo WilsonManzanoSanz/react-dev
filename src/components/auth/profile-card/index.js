@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { SHOW_ONE  } from "./../../../redux/constants/constant";
-import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
 import {UserHeader} from '../user-header';
 import PropTypes from 'prop-types';
 import { withRouter } from "react-router-dom";
 import { Input } from '../../ui/input';
-import {auth} from '../../../services/auth';
 import PlaceDetailedCard from '../../place/place-detailed-card';
 
 import './style.scss';
@@ -47,11 +44,11 @@ class ProfileCard extends Component {
     <div className="center-card" id="profile-card">
       <div className="card">
         <UserHeader user={this.props.user}/>
-        <img className="image-card" src={this.props.user.photoURL}/>
+        <img className="image-card" src={this.props.user.photoURL} alt="avatar"/>
         { this.props.user.role_vp === "customer" &&  
-        <div>
-       <h4 className="">Appointments</h4>
-        <p className="">You have an appointment on Bother Fast Food on Monday at 5pm - 5:30pm </p>
+      <div>
+        <h4>Appointments</h4>
+        <p>You have an appointment on Bother Fast Food on Monday at 5pm - 5:30pm </p>
         <div id="map-detail-user"></div>
         <button className=" center-button" type="button" id="button-newplace" onClick={this.goToAddNewPlace}>ADD NEW PLACE</button>
         </div>
@@ -70,6 +67,13 @@ class ProfileCard extends Component {
 const mapStateToProps = state => {
   return { todos: state.user };
 };
-
-
+                                         
+ProfileCard.propTypes = {
+  user: PropTypes.object,
+};
+      
+ProfileCard.defaultProps = {
+  user: {},
+};  
+      
 export default withRouter(connect(mapStateToProps)(ProfileCard));

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import PropTypes from 'prop-types';
 
-class Modal extends React.Component {
+class Modal extends Component {
   render() {
     // Render nothing if the "show" prop is false
     if (!this.props.show) {
@@ -51,8 +51,8 @@ class Modal extends React.Component {
 Modal.propTypes = {
   onClose: PropTypes.func.isRequired,
   show: PropTypes.bool,
-  maxWidth: 500,
-  minHeight: 300,
+  maxWidth: PropTypes.number,
+  minHeight: PropTypes.number,
   children: PropTypes.node
 };
 

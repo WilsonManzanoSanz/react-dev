@@ -5,12 +5,11 @@ let initialUser = {email:'', name:'', photo_url:'', id:'', api_token:''};
 const authReducer = (state = initialUser, action) => {
     switch (action.type){
         case ADD_USER:
-        return { ...state, ...  action.user };
+          return { ...state, ...  action.user };
         case SHOW_USER:
-        return state;
+          return state;
         case REMOVE_USER:
-        console.log({...state, email:'', name:'', photo_url:'', id:'', api_token:''});
-        return  {...state, email:'', name:'', photo_url:'', id:'', api_token:''};
+          return  {...state, email:'', name:'', photo_url:'', id:'', api_token:'', establishment:null};
         default:
         return state
     }

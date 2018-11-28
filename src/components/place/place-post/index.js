@@ -7,8 +7,6 @@ import { placeService } from '../../../services/place';
 import { withRouter } from "react-router-dom";
 import {auth} from '../../../services/auth';
 import  Modal  from '../../ui/modal';
-import { connect } from "react-redux";
-import { addUser } from "../../../redux/actions/actions";
 import './style.scss';
 
 
@@ -141,6 +139,7 @@ class PlacePost extends Component {
   
   updateUser(response){
     let user = {user: this.props.user, establishment:response.data, establishment_schedule:response.data.schedule};
+    user.user.role_vp = "admin";
     auth.saveUser(user);
   }
   
