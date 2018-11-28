@@ -56,7 +56,7 @@ class ProfileCard extends Component {
         { this.props.user.establishment &&  
           <div>
             You have an establishment 
-            <PlaceDetailedCard place={this.props.user.establishment} editMode="true" id={this.props.user.establishment.id} className="card" expandCard="true"/>                            
+            <PlaceDetailedCard place={this.props.user.establishment} editMode={true} id={this.props.user.establishment.id} className="card" expandCard={true}/>                            
           </div>
         }
       </div>

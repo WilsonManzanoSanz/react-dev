@@ -122,7 +122,7 @@ class PlaceDetailedCard extends Component {
 
 PlaceDetailedCard.propTypes = {
   place: PropTypes.object,
-  id: PropTypes.string,
+  id: PropTypes.number,
   className: PropTypes.string,
   expandCard: PropTypes.bool,
   editMode: PropTypes.bool,
