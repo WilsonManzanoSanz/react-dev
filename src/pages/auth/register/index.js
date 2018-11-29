@@ -49,7 +49,6 @@ class Register extends Component {
           }).catch(error => console.error(error));
         } else {
           this.registerUser(newUser);
-          this.props.history.push('/');
         }
       /*}).catch(error => {
         console.error(error);
@@ -60,15 +59,21 @@ class Register extends Component {
 
   registerUser(newUser){
     auth.registerUser(newUser).then(response=>{
-      if(response.status){
+       if(response && response.status === 'ok'){
         // TODO THIS WILL WORK WHEN THE BACKEND SEND ME THE TOKEN
         // auth.saveUser(response.data);
         auth.loginWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
-          auth.saveUser(response.data);
-          this.props.history.push('/');
+           if(response && response.status === 'ok'){
+              auth.saveUser(response.data);
+              this.props.history.push('/');
+           }else{
+             this.setState({errorMessage: response.message});
+           }
         }).catch(error => {
           this.setState({errorMessage: error.message});
         });
+      } else {
+        this.setState({errorMessage: response.message});
       }
     }).catch(error => console.log(error));
   }
@@ -154,8 +159,8 @@ class Register extends Component {
             />
             <br/>
             <img src="" className="nodisplay" height="200" alt="preview..." id="preview-image"/>
-            { this.state.errorMessage && <h4 className="center-text red">{this.state.errorMessage} </h4>}
             <input className="nodisplay" id="add-photo" type="file"/>
+            { this.state.errorMessage && <h4 className="center-text red">{this.state.errorMessage} </h4>}
             <button  className="center-button margin-top raised" type="button" onClick={this.addPhoto}> 
               AGREGAR FOTO
             </button>

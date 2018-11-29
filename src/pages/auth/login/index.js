@@ -24,10 +24,14 @@ class Login extends Component {
   attemptLogin(event) {
     event.preventDefault();
     auth.loginWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
-      console.log('loginResponse', response)
-      auth.saveUser(response.data);
-      this.setState = {form: {}};
-      this.props.history.push('/');
+      console.log('loginResponse', response);
+      if(response && response.data){
+        auth.saveUser(response.data);
+        this.setState = {form: {}};
+        this.props.history.push('/');
+      }else{
+        this.setState({errorMessage: response.message});
+      }
     }).catch(error => {
       this.setState({errorMessage: error.message});
     });

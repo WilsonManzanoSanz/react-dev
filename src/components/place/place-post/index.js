@@ -27,6 +27,7 @@ class PlacePost extends Component {
     this.place = null;
     this.userID = null;
     this.state = {person:null, people: [], isOpen: false};
+    console.log(this.props);
   }
   
   toggleModal(e, userId) {
@@ -101,8 +102,8 @@ class PlacePost extends Component {
   }
   
   changeMarker(e, marker) {
-    console.log('lat', marker.position.lat());
-    console.log('lng', marker.position.lng());
+    //console.log('lat', marker.position.lat());
+    //console.log('lng', marker.position.lng());
   }
   
   addNewPlace(event){
@@ -197,7 +198,7 @@ class PlacePost extends Component {
   
   render(){
     let classPlace = (this.props.place.photo_url) ? 'center' : 'nodisplay'; 
-    const people = this.state.people.map(value => <div className="padding10 card" onClick={(e) => this.toggleModal(e, value.id)}><p className="nospace">{value.name}</p><p className="gray nospace">{value.email}</p></div>)
+    const people = this.state.people.map(value => <div key={value.id} className="padding10 card" onClick={(e) => this.toggleModal(e, value.id)}><p className="nospace">{value.name}</p><p className="gray nospace">{value.email}</p></div>)
     return (
        <div className="center-card">
         <div className="card">  
