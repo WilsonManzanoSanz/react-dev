@@ -5,6 +5,7 @@ import {  Route, Switch } from 'react-router-dom';
 import About from '../about';
 import {Places} from '../place/places';
 import {Place} from '../place/place';
+import PlaceWorkers from '../place/place-workers';
 import PostPlace from '../place/post-place';
 import {Schedules} from '../schedules';
 import Login from '../auth/login';
@@ -29,7 +30,8 @@ class Main extends Component {
         <Route exact path="/auth/register" component={Register} />
         <Route exact path="/auth/profile" component={Profile} />
         <Route exact path="/auth/forgot-password" component={ForgotPassword} />
-        <Route path="/place/:place" component={Place} />
+        <Route exact path="/place/:place" component={Place} />
+        <Route exact path="/place/workers/:place" component={PlaceWorkers} />
         <Route path="/schedule/:id" component={Schedules} />
         <Route path="/staffs/:place" component={UserProfiles} />
         <Route path="/newplace/" component={PostPlace} />

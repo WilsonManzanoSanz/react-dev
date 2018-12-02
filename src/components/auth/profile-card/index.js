@@ -13,8 +13,8 @@ let map;
 class ProfileCard extends Component {
   constructor(props){
     super(props);
-    this.goToAddNewPlace = this.goToAddNewPlace.bind(this);
-    this.state = {person:null, people: []};
+    this.goTo = this.goTo.bind(this);
+    this.state = {};
     this.status = false;
     this.previousValue = null;
   }
@@ -33,17 +33,15 @@ class ProfileCard extends Component {
     }
   }
   
-  goToAddNewPlace(){
-    this.props.history.push('/newplace');
+  goTo(path){
+    this.props.history.push(path);
   }
   
-  
   render(){
-    console.log(this.props.user.establishment.workers);
     let workers = (this.props.user.establishment.workers) ? this.props.user.establishment.workers.map((value) => {
       return  <div className="card" key={value.id} onClick={() => console.log(value)}><UserHeader user={value}/></div>
     }) : (null);
-    const people = this.state.people.map(value => <div className="padding10 card"><p className="nospace">{value.name}</p><p className="gray nospace">{value.email}</p></div>)
+    //const people = this.state.people.map(value => <div className="padding10 card"><p className="nospace">{value.name}</p><p className="gray nospace">{value.email}</p></div>)
     return (
     <div className="center-card" id="profile-card">
       <div className="card">
@@ -54,7 +52,7 @@ class ProfileCard extends Component {
         <h4>Appointments</h4>
         <p>You have an appointment on Bother Fast Food on Monday at 5pm - 5:30pm </p>
         <div id="map-detail-user"></div>
-        <button className=" center-button" type="button" id="button-newplace" onClick={this.goToAddNewPlace}>ADD NEW PLACE</button>
+        <button className=" center-button" type="button" id="button-newplace" onClick={() => this.goTo('/newplace')}>ADD NEW PLACE</button>
         </div>
         }
         { this.props.user.establishment &&  
@@ -66,7 +64,7 @@ class ProfileCard extends Component {
          <div>
             <h2>Your workers</h2>                           
             {workers}
-            <button className="center-button" type="button" id="button-editworker" onClick={() => console.log('edit')}>EDIT WORKERS</button>
+            <button className="center-button" type="button" id="button-editworker" onClick={() => this.goTo(`/place/workers/${this.props.user.establishment.id}`)}>EDIT WORKERS</button>
           </div> 
           }                               
       </div>
