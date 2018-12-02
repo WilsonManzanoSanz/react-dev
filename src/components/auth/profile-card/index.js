@@ -39,12 +39,16 @@ class ProfileCard extends Component {
   
   
   render(){
+    console.log(this.props.user.establishment.workers);
+    let workers = (this.props.user.establishment.workers) ? this.props.user.establishment.workers.map((value) => {
+      return  <div className="card" key={value.id} onClick={() => console.log(value)}><UserHeader user={value}/></div>
+    }) : (null);
     const people = this.state.people.map(value => <div className="padding10 card"><p className="nospace">{value.name}</p><p className="gray nospace">{value.email}</p></div>)
     return (
     <div className="center-card" id="profile-card">
       <div className="card">
         <UserHeader user={this.props.user}/>
-        <img className="image-card" src={this.props.user.photoURL} alt="avatar"/>
+        <img className="image-card" src={this.props.user.photo_url} alt="avatar"/>
         { this.props.user.role_vp === "customer" &&  
       <div>
         <h4>Appointments</h4>
@@ -55,10 +59,16 @@ class ProfileCard extends Component {
         }
         { this.props.user.establishment &&  
           <div>
-            You have an establishment 
-            <PlaceDetailedCard place={this.props.user.establishment} editMode={true} id={this.props.user.establishment.id} className="card" expandCard={true}/>                            
+            <h2>You have an establishment</h2>                            
+            <PlaceDetailedCard place={this.props.user.establishment} editMode={true} id={this.props.user.establishment.id} className="card" expandCard={true}/>                        
           </div>
-        }
+        } { this.props.user.establishment.workers &&  
+         <div>
+            <h2>Your workers</h2>                           
+            {workers}
+            <button className="center-button" type="button" id="button-editworker" onClick={() => console.log('edit')}>EDIT WORKERS</button>
+          </div> 
+          }                               
       </div>
     </div>);
   }

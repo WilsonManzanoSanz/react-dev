@@ -3,9 +3,9 @@ import { render } from 'react-dom';
 import {  Route, Switch } from 'react-router-dom';
 // Pages
 import About from '../about';
-import {Home} from '../home';
-import {Place} from '../places';
-import PostPlace from '../post-place';
+import {Places} from '../place/places';
+import {Place} from '../place/place';
+import PostPlace from '../place/post-place';
 import {Schedules} from '../schedules';
 import Login from '../auth/login';
 import {Register} from '../auth/register';
@@ -23,7 +23,7 @@ class Main extends Component {
     return (
     <div className="main-container" id="main-container" ref="main-container">
       <Switch>
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={Places} />
         <Route path="/about" component={About} />
         <Route exact path="/auth/login" component={Login} />
         <Route exact path="/auth/register" component={Register} />

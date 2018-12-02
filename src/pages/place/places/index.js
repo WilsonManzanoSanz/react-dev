@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import  PlaceCard from '../../components/place/place-card';
-import  PlaceDetailedCard from '../../components/place/place-detailed-card';
-import { Input } from '../../components/ui/input';
-import { placeService } from '../../services/place';
+import  PlaceCard from '../../../components/place/place-card';
+import  PlaceDetailedCard from '../../../components/place/place-detailed-card';
+import { Input } from '../../../components/ui/input';
+import { placeService } from '../../../services/place';
 
 import './style.scss';
 
 let map;
 
-class Home extends Component {
+class Places extends Component {
   constructor(props){
     super(props);
     this.state = {position : {lat:10.9743, lng:-74.8033}, results: [], place:null};
@@ -106,7 +106,7 @@ class Home extends Component {
   }
 }
       
-export {Home};
+export {Places};
       
       
       

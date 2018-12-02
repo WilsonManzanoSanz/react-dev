@@ -59,7 +59,7 @@ class PlaceDetailedCard extends Component {
   render(){
     let hoursSchedule = null;
     if(this.props.place.schedule){
-       hoursSchedule = this.props.place.schedule.map(value => <p>{value.day.toUpperCase()} {value.start_hour} - {value.end_hour} </p>);
+       hoursSchedule = this.props.place.schedule.map((value, idx) => <p key={idx}>{value.day.toUpperCase()} {value.start_hour} - {value.end_hour} </p>);
     }
    //console.log(this.props.place);
     return (
@@ -134,7 +134,7 @@ PlaceDetailedCard.defaultProps = {
   closeItself: () => 0,
   expandCard: false,
   editMode: false,
-  place: {schedule:[], workers:[]},
+  place: {schedule:[], workers:[], position:{lat:10.9846052, lng:-74.8057843}},
 };
 
 export default withRouter(PlaceDetailedCard);
