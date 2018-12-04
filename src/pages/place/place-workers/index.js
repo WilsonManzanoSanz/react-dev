@@ -14,6 +14,7 @@ class PlaceWorkers extends Component {
     this.handleChangeSearch = this.handleChangeSearch.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.addRelation = this.addRelation.bind(this);
+    this.removeUser = this.removeUser.bind(this);
     this.userID = null;
     this.state = {place:{workers:[]}, person:null, people: [], isOpen:false, exact:false};
   }
@@ -29,8 +30,12 @@ class PlaceWorkers extends Component {
   addRelation() {
     placeService.relationPlace(this.userID, this.state.place.id).then(response => {
       console.log('newRelation',response);
-      this.setState({
-        isOpen: !this.state.isOpen
+      this.setState((prevState) => {
+         return {isOpen: !prevState, place : {...prevState.place, workers:[...prevState.place.workers, ...[response.data.user]]}};
+      }, () => {
+        let user = {user: this.props.user, establishment:this.state.place, establishment_schedule:this.state.place.schedule};
+        user.user.role_vp = "admin";
+        auth.saveUser(user);
       });
     }).catch(error => console.error(error));
   }
@@ -46,6 +51,15 @@ class PlaceWorkers extends Component {
       }).catch(error => console.error(error));
     }
     //console.log(this.props);
+  }
+  
+  removeUser(userId, idx){
+    placeService.deleteRelation(userId, this.state.place.id).then(response => {
+      console.log('deleteRelation',response);
+      this.setState((prevState) => ({
+        //place :{...prevState, ...{workers:[...prevState.workers.slice(0,idx), ......prevState.workers.slice(idx+1)]}}
+      }));
+    }).catch(error => console.error(error));
   }
   
   handleChangeSearch(name, value){
@@ -69,7 +83,7 @@ class PlaceWorkers extends Component {
   render(){
     let workers = (this.state.place.workers) ? this.state.place.workers.map((value) => {
       return  (<div className="card" key={value.id} onClick={() => console.log(value)}>
-                <UserHeader user={value}/>
+                <UserHeader user={value} deleteOption={true}/>
               </div>)
     }) : (null);
     const people = this.state.people.map(value => 

@@ -73,6 +73,16 @@ class PlaceService {
     ).catch(error=> console.error(error));
   }
   
+  deletePlace(userId, placeId, workerVp = 1){
+    return fetch(`${hosting}/api/v1/relations/`,
+        {
+      method: 'DELETE',
+      headers: headers,
+      body:JSON.stringify({user_id: userId, establishment_id: placeId, relation_type_vp: workerVp})
+    }).then(response => response.json()
+    ).catch(error=> console.error(error));
+  }
+  
   uploadImage(uid, file) {
     // Create a root reference
     return new Promise((resolve, reject) => {

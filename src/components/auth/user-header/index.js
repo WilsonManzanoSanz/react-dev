@@ -14,13 +14,23 @@ class UserHeader extends Component {
       <div className="flex-header">
         <Avatar url={Boolean(this.props.user.photoURL) ? this.props.user.photoURL : this.props.user.photo_url}/>
         <UserAvatarInfo user={this.props.user}/>
+        <span className="spacer"></span>
+        { this.props.deleteOption && <i className="material-icons red pointer" onClick={this.props.removeWorker}>delete</i> }
       </div>
     );
   }
 }
 
 UserHeader.propTypes = {
-  user: PropTypes.object
+  user: PropTypes.object,
+  deleteOption: PropTypes.bool,
+  removeWorker: PropTypes.func,
 };
+
+UserHeader.defaultProps = {
+  user: {},
+  deleteOption: false,
+  removeWorker: () => console.log('delete')
+}; 
 
 export {UserHeader};
