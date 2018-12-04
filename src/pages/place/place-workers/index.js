@@ -53,12 +53,13 @@ class PlaceWorkers extends Component {
     //console.log(this.props);
   }
   
-  removeUser(userId, idx){
-    placeService.deleteRelation(userId, this.state.place.id).then(response => {
+  removeUser(relationId, idx){
+    placeService.deleteRelation(relationId).then(response => {
       console.log('deleteRelation',response);
-      this.setState((prevState) => ({
+      this.setState((prevState) => {
+        return { place : {...prevState.place, workers:[[...prevState.place.slice(0,idx), ...prevState.place.slice(idx+1)]]}};
         //place :{...prevState, ...{workers:[...prevState.workers.slice(0,idx), ......prevState.workers.slice(idx+1)]}}
-      }));
+      });
     }).catch(error => console.error(error));
   }
   

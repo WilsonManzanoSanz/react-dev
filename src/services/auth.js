@@ -193,12 +193,23 @@ class AuthService {
   }
 
   signOut(){
-    //return firebase.auth().signOut().then(()=> {
+    return fetch(`${hosting}/api/v1/auth/logout`,
+        {
+      mode: 'cors',
+      headers: {Authorization:headers.Authorization},
+      method:'POST'
+    }).then(response => response.json())
+      .then(() => {
+        localStorage.removeItem(`loggedUser`);
+        store.dispatch(removeUser());
+        //store.getState();
+      }).catch(error => console.error(error));
+    /*return firebase.auth().signOut().then(()=> {
       // Sign-out successful.
       localStorage.removeItem(`loggedUser`);
       store.dispatch(removeUser());
       store.getState();
-    /*}).catch((error) => {
+    }).catch((error) => {
       console.error(error);
       // An error happened.
     });*/
