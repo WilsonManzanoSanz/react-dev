@@ -32,8 +32,8 @@ class Main extends Component {
         <Route exact path="/auth/forgot-password" component={ForgotPassword} />
         <Route exact path="/place/:place" component={Place} />
         <Route exact path="/place/workers/:place" component={PlaceWorkers} />
-        <Route path="/schedule/:id" component={Schedules} />
-        <Route path="/staffs/:place" component={UserProfiles} />
+        <Route exact path="/place/schedule/:id" component={Schedules} />
+        <Route exact path="/place/staffs/:place" component={UserProfiles} />
         <Route path="/newplace/" component={PostPlace} />
         <Route component={DefaultPage} />
       </Switch> 

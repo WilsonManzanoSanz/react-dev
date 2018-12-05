@@ -28,7 +28,7 @@ class PlaceDetailedCard extends Component {
   
   goToStaffs(e){
      e.stopPropagation(); 
-     this.props.history.push({pathname:`/staffs/${this.props.place.id}`, 
+     this.props.history.push({pathname:`/place/staffs/${this.props.place.id}`, 
                              state:{id:this.props.place.id, workers:this.props.place.workers}});
   }
   

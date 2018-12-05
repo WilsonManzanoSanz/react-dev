@@ -176,7 +176,7 @@ class AuthService {
   getAllTheUsers(name, role = 'admin'){
     const url = new URL(`${hosting}/api/v1/users`);
     const params = { name: name, not_role: role};
-    url.search = new URLSearchParams(params)
+    url.search = new URLSearchParams(params);
     return fetch(url,
                 {headers:headers,
                 }).then(response => response.json());

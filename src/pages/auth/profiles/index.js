@@ -13,7 +13,7 @@ class UserProfiles extends Component {
   }
   
   goToSchedule(value){
-    this.props.history.push({pathname:`/schedule/${value.uid}`, state:{
+    this.props.history.push({pathname:`/place/schedule/${value.id}`, state:{
       profile:value
     }});
   }
@@ -27,7 +27,7 @@ class UserProfiles extends Component {
     }else {
       placeService.getPlace(this.props.match.params.place).then(response => {
         const workers = response.data.workers.map((value) => {
-          return  <div className="card" onClick={() => {this.goToSchedule(value)}}><UserHeader user={value}/></div>
+          return  <div className="card" onClick={() => {this.goToSchedule(value)}} key={value.id}><UserHeader user={value}/></div>
         });
         this.setState({userCards:workers}); 
       }).catch(error => console.error(error));

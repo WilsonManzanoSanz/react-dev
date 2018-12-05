@@ -73,8 +73,20 @@ class PlaceService {
     ).catch(error=> console.error(error));
   }
   
-  deleteRelation(relationId){
+  getInfoFromRelation(relationId){
     return fetch(`${hosting}/api/v1/relations/${relationId}`,
+        {
+      method: 'GET',
+      headers: headers,
+    }).then(response => response.json()
+    ).catch(error=> console.error(error));
+  }
+  
+  deleteRelation(user, place){
+    const url = new URL(`${hosting}/api/v1/relations`);
+    const params = { user: user, place: place};
+    url.search = new URLSearchParams(params);
+    return fetch(url,
         {
       method: 'DELETE',
       headers: headers,
