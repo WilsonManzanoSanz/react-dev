@@ -143,13 +143,13 @@ class AuthService {
     ).catch(error=> console.error(error));
   }
   
-  saveUser({establishment, user,establishment_schedule}){
-    this.user = user
-    if(establishment){
-      this.user.establishment = establishment;
-      this.user.establishment.schedule = establishment_schedule;
-      this.user.establishment.position = {lat: parseFloat(establishment.latitude), lng: parseFloat(establishment.longitude)};
-    }
+  saveUser(user){
+    this.user = user;
+    //if(establishment ){
+    //  this.user.establishment = establishment;
+    this.user.establishment.schedule = user.establishment_schedule;
+    this.user.establishment.position = {lat: parseFloat(user.establishment.latitude), lng: parseFloat(user.establishment.longitude)};
+   // }
     headers.Authorization = `Token ${user.api_token}`;
     localStorage.setItem(`loggedUser`, JSON.stringify(this.user));
     store.dispatch(addUser(this.user));

@@ -83,7 +83,7 @@ class PlaceService {
   }
   
   deleteRelation(user, place){
-    const url = new URL(`${hosting}/api/v1/relations`);
+    const url = new URL(`${hosting}/api/v1/relations/`);
     const params = { user: user, place: place};
     url.search = new URLSearchParams(params);
     return fetch(url,

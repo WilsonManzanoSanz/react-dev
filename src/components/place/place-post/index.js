@@ -23,7 +23,6 @@ class PlacePost extends Component {
     this.place = null;
     this.userID = null;
     this.state = {person:null, people: [], isOpen: false};
-    console.log(this.props);
   }
   
   componentDidMount(){
@@ -47,7 +46,8 @@ class PlacePost extends Component {
     // so that the autocomplete requests use the current map bounds for the
     // bounds option in the request.
     autocomplete.bindTo('bounds', map);
-
+    
+    //autocomplete.setTypes(['address', 'establishment']);
     // Set the data fields to return when the user selects a place.
     autocomplete.setFields(
         ['address_components', 'geometry', 'icon', 'name']);
@@ -184,11 +184,12 @@ class PlacePost extends Component {
               type="text"
               minlength="6"
               required={true}
+              value={this.props.place.description}
               onChange={this.handleChange}
             />
             <Input
               id="place-number-input"
-              name="number"
+              name="phone_number"
               placeholder="Ingresa el numero de atención"
               className="input-width padding20"
               type="number"

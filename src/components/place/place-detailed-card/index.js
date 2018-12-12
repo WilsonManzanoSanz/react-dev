@@ -33,7 +33,7 @@ class PlaceDetailedCard extends Component {
   }
   
   goToProps(e, path){
-    console.log(path);
+    console.log(this.props.place);
      e.stopPropagation(); 
     //const photo = (this.props.place.photos) ? (this.props.place.photos[0].getUrl()) : (this.props.place.icon);
     if(this.props.location.pathname === '/' || this.props.location.pathname === 'auth/profile'){
@@ -45,6 +45,7 @@ class PlaceDetailedCard extends Component {
           place:{
           id:this.props.place.id, 
           name:this.props.place.name,
+          description:this.props.place.description,
           opening_hours: this.props.place.opening_hours,
           rating:this.props.place.rating,
           address:this.props.place.address,
@@ -53,7 +54,6 @@ class PlaceDetailedCard extends Component {
           schedule:this.props.place.schedule,
           workers:this.props.place.workers,
           }}}); 
-    
   }
   
   render(){

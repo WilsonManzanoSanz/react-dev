@@ -1,3 +1,8 @@
+:root{
+  --vcal-bg-color:white;
+  --vcal-selected-color:blue;
+}
+
 #v-cal *, #v-cal *:before, #v-cal *:after {
   box-sizing: border-box;
 }
@@ -81,6 +86,7 @@
   flex: 0 0 14.28%;
   max-width: 14.28%;
   padding: 1.2rem 0;
+  color:black;
 }
 
 #v-cal .vcal-date--active {
