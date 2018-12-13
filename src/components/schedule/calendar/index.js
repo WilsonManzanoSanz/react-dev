@@ -12,6 +12,7 @@ class ScheduleCalender extends Component {
     this.date =  new Date();
     this.todaysDate = new Date();
     this.date.setDate(1);
+    this.days = [];
     this.initializeCalendar = this.initializeCalendar.bind(this);
     this.createMonth = this.createMonth.bind(this);
     this.createDay = this.createDay.bind(this);
@@ -19,43 +20,35 @@ class ScheduleCalender extends Component {
     this.monthsAsString = this.monthsAsString.bind(this);
     this.nextMonth = this.nextMonth.bind(this);
     this.previousMonth = this.previousMonth.bind(this);
-    this.dateClicked = this.dateClicked.bind(this);
     this.clearCalendar = this.clearCalendar.bind(this);
     this.selectDay = this.selectDay.bind(this);
-    this.state = {days:[], date:''};
+    this.state = {days:[], date:'', properties:[], currentMonth:''};
   }
   
   componentDidMount(){
-    //vanillaCalendar.init({disablePastDays:false});
     this.initializeCalendar();
     this.createMonth();
   }
   
   nextMonth(e){
     e.stopPropagation();
-    this.setState({days:[]}, () => {
-      this.clearCalendar();
-      const prevMonth = this.date.getMonth() + 1;
-      this.date.setMonth(prevMonth);
-      this.createMonth();
-    });
+    this.days = [];
+    this.clearCalendar();
+    const prevMonth = this.date.getMonth() + 1;
+    this.date.setMonth(prevMonth);
+    this.createMonth();
   }
   
   previousMonth(e){
     e.stopPropagation();
-    this.setState({days:[]}, () => {
-      this.clearCalendar();
-      const prevMonth = this.date.getMonth() - 1;
-      this.date.setMonth(prevMonth);
-      this.createMonth();
-    });
+    this.days = [];
+    this.clearCalendar();
+    const prevMonth = this.date.getMonth() - 1;
+    this.date.setMonth(prevMonth);
+    this.createMonth();
   }
   
   initializeCalendar(){
-    this.month = document.querySelectorAll('[data-calendar-area="month"]')[0];
-    this.next = document.querySelectorAll('[data-calendar-toggle="next"]')[0];
-    this.previous = document.querySelectorAll('[data-calendar-toggle="previous"]')[0];
-    this.label = document.querySelectorAll('[data-calendar-label="month"]')[0];
   }
   
   createMonth(){
@@ -68,43 +61,22 @@ class ScheduleCalender extends Component {
       );
       this.date.setDate(this.date.getDate() + 1);
     }
+    this.setState({days:this.days});
     // while loop trips over and day is at 30/31, bring it back
     this.date.setDate(1);
     this.date.setMonth(this.date.getMonth() - 1);
-
-    this.label.innerHTML =
-      this.monthsAsString(this.date.getMonth()) + ' ' + this.date.getFullYear();
-    this.dateClicked();
-  }
-  
-  dateClicked () {/*
-    this.activeDates = document.querySelectorAll(
-      '[data-calendar-status="active"]'
-    );
-    for (let i = 0; i < this.activeDates.length; i++) {
-      console.log(this.activeDates[i]);
-      this.activeDates[i].addEventListener('click', this.selectDay);
-    }*/
+    
+    this.setState({currentMonth:this.monthsAsString(this.date.getMonth()) + ' ' + this.date.getFullYear()});
   }
   
   selectDay(num, day, month){
     this.setState({date: `You choose ${num}/${this.date.getMonth()+1}/${this.date.getFullYear()}`});
-    /*console.log(event);
-    const picked = document.querySelectorAll(
-      '[data-calendar-label="picked"]'
-    )[0];
-    picked.innerHTML = event.srcElement.dataset.calendarDate;
-    */
-    //this.removeActiveClass();
-    //event.target.classList.add('vcal-date--selected');
+    this.removeActiveClass();
+    this.days[num-1] = {...this.days[num-1], ...{className:this.days[num-1].className + ' vcal-date--selected'}};
+    this.setState({days: this.days});
   }
   
   createDay(num, day, month){
-    //const newDay = document.createElement('div');
-    //const dateEl = document.createElement('span');
-   // dateEl.innerHTML = num;
-    //newDay.className = 'vcal-date';
-    //newDay.setAttribute('data-calendar-date', this.date);
     const key = ''   + num + this.date.getMonth()+1 + this.date.getFullYear();
     let className = 'vcal-date';
     let style = {};
@@ -124,23 +96,14 @@ class ScheduleCalender extends Component {
       //newDay.classList.add('vcal-date--disabled');
       className = className + ' vcal-date--disabled';
     } else {
-      //newDay.classList.add('vcal-date--active');
       className = className + ' vcal-date--active';
       attribute = 'active';
-      //newDay.setAttribute('data-calendar-status', 'active');
     }
 
     if (this.date.toString() === this.todaysDate.toString()) {
-      //newDay.classList.add('vcal-date--today');
       className = className + ' vcal-date--today';
     }
-    let newElement = <div  onClick={(e) => this.selectDay(num, day, month)} className={className} key={key} style={style} data-calendar-status={attribute} data-calendar-date={this.date}><span>{num}</span></div>;
-    
-    this.setState((prevState) => {
-      return {days: [...prevState.days, ...[newElement]]};
-    });
-    //newDay.appendChild(dateEl)
-    //this.month.appendChild(newDay);
+    this.days.push({num:num, day:day, month: month, className: className, style: style, attribute: attribute, key:key});
   }
   
   monthsAsString (monthIndex) {
@@ -160,17 +123,19 @@ class ScheduleCalender extends Component {
     ][monthIndex];
   }
   
-  removeActiveClass () {
-    for (var i = 0; i < this.activeDates.length; i++) {
-      this.activeDates[i].classList.remove('vcal-date--selected');
+  removeActiveClass (){
+    for (var i = 0; i < this.days.length; i++) {
+      if(this.days[i].className.search('--selected') > 0 ){
+        this.days[i].className = this.days[i].className.substring(0, this.days[i].className.search('--selected'));
+      }
     }
   }
   
   clearCalendar() {
-    this.month.innerHTML = '';
   }
   
   render(){
+    const days = this.state.days.map(value => <div  onClick={(e) => this.selectDay(value.num, value.day, value.month)} className={value.className} key={value.key} style={value.style} data-calendar-status={value.attribute} data-calendar-date={this.date}><span>{value.num}</span></div>);
     return (
     <div className="card">
         {this.props.user && <h1 className="nomargin">{this.props.user.name}</h1>}
@@ -184,7 +149,7 @@ class ScheduleCalender extends Component {
             </button>
 
             <div className="vcal-header__label" data-calendar-label="month">
-              March 2017
+              {this.state.currentMonth}
             </div>
 
 
@@ -204,7 +169,7 @@ class ScheduleCalender extends Component {
             <span>Sun</span>
           </div>
           <div className="vcal-body" data-calendar-area="month">
-            {this.state.days}
+            {days}
           </div>
         </div>
 
