@@ -13,8 +13,8 @@ let map;
 class Places extends Component {
   constructor(props){
     super(props);
-    this.state = {position : {lat:10.9743, lng:-74.8033}, results: [], place:null, hasMore:false};
-    this.number = 1;
+    this.state = {position : {lat:10.9743, lng:-74.8033}, results: [], place:null, hasMore:true};
+    this.number = 0;
     this.askForGPS = this.askForGPS.bind(this);
     this.addPlaces = this.addPlaces.bind(this);
     this.createMarker = this.createMarker.bind(this);
@@ -92,10 +92,12 @@ class Places extends Component {
   }
   
   loadMore(){
-    console.log('loading ...');
+    console.log('loading ...', this.state.hasMore);
     this.number++;
     placeService.getPlaces(this.number).then(response => {
-       console.log('places',response);
+       if(response.length < 1){
+         this.setState({hasMore:false});
+       } 
        this.addPlaces([...this.state.results, ...response], true);
     }).catch(error => console.error(error));
   }
@@ -105,27 +107,18 @@ class Places extends Component {
       value.position = { lat: value.latitude , lng: value.longitude };
       return (<PlaceDetailedCard key={value.id} place={value} editMode={false} expandCard={false}/>);
     });
-    const items = (<div className="padding20">
-         { listPlaces }
-        </div>);
-    const loader = <div className="loader">Loading ...</div>;
     return (
-      <div className="google-maps" id="google-maps">
-        { this.state.place && <PlaceCard id="map-marker" place={this.state.place} delete={true} closeItself={this.hideDetials}/>}
-        <div id="map"></div>
-      <div style={{height:'700px', overflow:'auto'}}>
-       <InfiniteScroll
+        <InfiniteScroll
           pageStart={0}
-          loadMore={() => console.log('loadMore')}
+          loadMore={this.loadMore}
           hasMore={this.state.hasMore}
-          useWindow={false}
-          loader={loader}>
+          loader={<div className="loader" key={0}>Loading ...</div>}>
+          { this.state.place && <PlaceCard id="map-marker" place={this.state.place} delete={true} closeItself={this.hideDetials}/>}
+          <div id="map" style={{height:'400px'}}></div>
           <div className="padding20">
            { listPlaces }
           </div>
         </InfiniteScroll>
-      </div>
-      </div>
    );
   }
 }
