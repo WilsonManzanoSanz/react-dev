@@ -38,7 +38,8 @@ class ProfileCard extends Component {
   }
   
   render(){
-    let workers = (this.props.user.establishment.workers) ? this.props.user.establishment.workers.map((value) => {
+    console.log(this.props.user.establishment);
+    let workers = (this.props.user.establishment) ? this.props.user.establishment.workers.map((value) => {
       return  <div className="card" key={value.id} onClick={() => console.log(value)}><UserHeader user={value}/></div>
     }) : (null);
     //const people = this.state.people.map(value => <div className="padding10 card"><p className="nospace">{value.name}</p><p className="gray nospace">{value.email}</p></div>)
@@ -60,7 +61,7 @@ class ProfileCard extends Component {
             <h2>You have an establishment</h2>                            
             <PlaceDetailedCard place={this.props.user.establishment} editMode={true} id={this.props.user.establishment.id} className="card" expandCard={true}/>                        
           </div>
-        } { this.props.user.establishment.workers &&  
+        } { this.props.user.establishment &&  
          <div>
             <h2>Your workers</h2>                           
             {workers}

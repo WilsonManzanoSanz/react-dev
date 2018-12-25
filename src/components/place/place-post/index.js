@@ -18,15 +18,18 @@ class PlacePost extends Component {
     this.savePhotoInCache = this.savePhotoInCache.bind(this);
     this.changeMarker = this.changeMarker.bind(this);
     this.updateUser = this.updateUser.bind(this);
+    this.goToHome = this.goToHome.bind(this);
+    this.handleArrayChange = this.handleArrayChange.bind(this);
+    this.postSchedules = this.postSchedules.bind(this);
     this.photo = null;
     this.marker = null;
     this.place = null;
     this.userID = null;
-    this.state = {person:null, people: [], isOpen: false};
+    this.state = {person:null, people: [], isOpen: false, dayInputs:{}};
   }
   
   componentDidMount(){
-    this.setState(this.props.place);
+    //this.setState(this.props.place);
     const map = new window.google.maps.Map(document.getElementById('map-picker'), {
       center: {lat:10.9743, lng:-74.8033},
       zoom: 16,
@@ -112,18 +115,29 @@ class PlacePost extends Component {
        placeService.uploadImage(this.props.user.uid, this.photo).then(response => {
          place.photo_url = response;
          placePostFunction(place).then(response => {
-            console.log('places',response);
-            this.updateUser(response);
-            this.props.history.push('/');
+            this.goToHome(response);
           }).catch(error => console.error(error));
       }).catch(error => console.error(error));
     } else {
       placePostFunction(place).then(response => {
-            console.log('places',response);
-            this.updateUser(response);
-            this.props.history.push('/');
+        this.goToHome(response);
       }).catch(error => console.error(error));
     }
+  }
+  
+  goToHome(response){
+    this.props.history.push('/');
+    placeService.postPlaceSchedule(this.state.dayInputs, 12)
+      .then(response => {
+      console.log(response);
+      this.updateUser(response);
+    }).catch(error => console.error(error));
+  }
+  
+  postSchedules(placeId){
+    placeService.postPlaceSchedule(this.state.dayInputs, placeId)
+      .then(value => console.log(value))
+      .catch(error => console.error(error));
   }
   
   updateUser(response){
@@ -157,8 +171,24 @@ class PlacePost extends Component {
     this.setState({[name]:value});
   }
   
+  handleArrayChange(event){
+   const value = event.target.value;
+   const name = event.target.name;
+   this.setState((prevState) => {
+     return { dayInputs: { ...prevState.dayInputs ,...{[name]:value}}};
+   });
+  }
+  
   render(){
     let classPlace = (this.props.place.photo_url) ? 'center' : 'nodisplay'; 
+    let daySchedule = [];
+    let daysName = [{name:'Lunes a Viernes', key:'week'}, {name:'Sabado', key:'saturday'}, {name:'Festivos', key:'holidays'}];
+    for (let i = 0; i < daysName.length; i++) {
+      daySchedule.push(( <div key={i}>
+                        <span>{daysName[i].name}:</span><input type="number" placeholder="Entrada" name={daysName[i].key + '_start'} className="input" style={{width:'50px'}} onChange={this.handleArrayChange} required/>
+                        -- <input type="number" placeholder="Salida" name={daysName[i].key + '_end'} className="input" style={{width:'50px'}} required onChange={this.handleArrayChange}/>
+                        </div>));
+    }
     return (
        <div className="center-card">
         <div className="card">  
@@ -197,6 +227,8 @@ class PlacePost extends Component {
               minlength="6"
               onChange={this.handleChange}
             />
+            <p>Horario de atención de cliente </p>
+            {daySchedule}
             <p>¿Donde te podemos encontrar?</p>
             <p><small className="gray">Si tu lugar aparece en google buscalo por nombre, sino ingresa su dirección</small></p>
             <Input

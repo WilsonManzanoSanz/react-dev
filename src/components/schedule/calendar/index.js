@@ -70,10 +70,12 @@ class ScheduleCalender extends Component {
   }
   
   selectDay(num, day, month){
-    this.setState({date: `You choose ${num}/${this.date.getMonth()+1}/${this.date.getFullYear()}`});
-    this.removeActiveClass();
-    this.days[num-1] = {...this.days[num-1], ...{className:this.days[num-1].className + ' vcal-date--selected'}};
-    this.setState({days: this.days});
+    if(!this.days[num-1].disabled){
+      this.setState({date: `You choose ${num}/${this.date.getMonth()+1}/${this.date.getFullYear()}`});
+      this.removeActiveClass();
+      this.days[num-1] = {...this.days[num-1], ...{className:this.days[num-1].className + ' vcal-date--selected'}};
+      this.setState({days: this.days});
+    }
   }
   
   createDay(num, day, month){
@@ -81,6 +83,7 @@ class ScheduleCalender extends Component {
     let className = 'vcal-date';
     let style = {};
     let attribute;
+    let disabled = false;
     // if it's the first day of the month
     if (num === 1) {
       if (day === 0) {
@@ -95,6 +98,7 @@ class ScheduleCalender extends Component {
     if (this.options.disablePastDays && this.date.getTime() <= this.todaysDate.getTime() - 1) {
       //newDay.classList.add('vcal-date--disabled');
       className = className + ' vcal-date--disabled';
+      disabled = true;
     } else {
       className = className + ' vcal-date--active';
       attribute = 'active';
@@ -103,7 +107,7 @@ class ScheduleCalender extends Component {
     if (this.date.toString() === this.todaysDate.toString()) {
       className = className + ' vcal-date--today';
     }
-    this.days.push({num:num, day:day, month: month, className: className, style: style, attribute: attribute, key:key});
+    this.days.push({num:num, day:day, month: month, className: className, style: style, attribute: attribute, key:key, disabled:disabled});
   }
   
   monthsAsString (monthIndex) {
@@ -177,7 +181,45 @@ class ScheduleCalender extends Component {
           Date picked:
           <span data-calendar-label="picked">{this.state.date}</span>
         </p>
+        <div className="horizontal flex" style={{overflowX:'scroll',border:'1px solid #e4e1e1'}}>
+          <div className="card">
+            7:30pm
+          </div>
+          <div className="card">
+              7:30pm
+            </div>
+          <div className="card">
+              7:30pm
+            </div>
+          <div className="card">
+              7:30pm
+            </div>
+          <div className="card">
+              7:30pm
+            </div>
 
+          <div className="card">
+              7:30pm
+            </div>
+          <div className="card">
+              7:30pm
+            </div>
+          <div className="card">
+              7:30pm
+            </div>
+          <div className="card">
+              7:30pm
+            </div>
+          <div className="card">
+              7:30pm
+            </div>
+          <div className="card">
+              7:30pm
+            </div>
+          <div className="card">
+              7:30pm
+            </div>
+      </div>
         <button className="full-width-important center-button" type="button">RESERVE</button>
       </div>); 
   }

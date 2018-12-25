@@ -4,6 +4,7 @@ import  PlaceCard from '../../../components/place/place-card';
 import  PlaceDetailedCard from '../../../components/place/place-detailed-card';
 import { Input } from '../../../components/ui/input';
 import { placeService } from '../../../services/place';
+import InfiniteScroll from 'react-infinite-scroller';
 
 import './style.scss';
 
@@ -12,13 +13,15 @@ let map;
 class Places extends Component {
   constructor(props){
     super(props);
-    this.state = {position : {lat:10.9743, lng:-74.8033}, results: [], place:null};
+    this.state = {position : {lat:10.9743, lng:-74.8033}, results: [], place:null, hasMore:false};
+    this.number = 1;
     this.askForGPS = this.askForGPS.bind(this);
     this.addPlaces = this.addPlaces.bind(this);
     this.createMarker = this.createMarker.bind(this);
     this.showDetails = this.showDetails.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.hideDetials = this.hideDetials.bind(this);
+    this.loadMore = this.loadMore.bind(this);
   }
   
   componentDidMount(){
@@ -30,7 +33,7 @@ class Places extends Component {
     
     // const places= new window.google.maps.places.PlacesService(map);
     
-    placeService.getPlaces().then(response => {
+    placeService.getPlaces(this.number).then(response => {
            console.log('places',response);
            this.addPlaces(response, true);
       }).catch(error => console.error(error));
@@ -44,7 +47,6 @@ class Places extends Component {
   }
  
   addPlaces(results, status){
-    
     //if (status === window.google.maps.places.PlacesServiceStatus.OK) {
     if (status) {
       for (let i = 0; i < results.length; i++) {
@@ -89,18 +91,40 @@ class Places extends Component {
     this.setState({place:null});
   }
   
+  loadMore(){
+    console.log('loading ...');
+    this.number++;
+    placeService.getPlaces(this.number).then(response => {
+       console.log('places',response);
+       this.addPlaces([...this.state.results, ...response], true);
+    }).catch(error => console.error(error));
+  }
+  
   render(){
     const listPlaces = this.state.results.map((value) => {
       value.position = { lat: value.latitude , lng: value.longitude };
       return (<PlaceDetailedCard key={value.id} place={value} editMode={false} expandCard={false}/>);
     });
+    const items = (<div className="padding20">
+         { listPlaces }
+        </div>);
+    const loader = <div className="loader">Loading ...</div>;
     return (
       <div className="google-maps" id="google-maps">
         { this.state.place && <PlaceCard id="map-marker" place={this.state.place} delete={true} closeItself={this.hideDetials}/>}
         <div id="map"></div>
-        <div className="padding20">
-         { listPlaces }
-        </div>
+      <div style={{height:'700px', overflow:'auto'}}>
+       <InfiniteScroll
+          pageStart={0}
+          loadMore={() => console.log('loadMore')}
+          hasMore={this.state.hasMore}
+          useWindow={false}
+          loader={loader}>
+          <div className="padding20">
+           { listPlaces }
+          </div>
+        </InfiniteScroll>
+      </div>
       </div>
    );
   }

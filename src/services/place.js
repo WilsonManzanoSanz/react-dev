@@ -9,6 +9,7 @@ class PlaceService {
     this.uploadImage = this.uploadImage.bind(this);
     this.getPlace = this.getPlace.bind(this);
     this.relationPlace = this.relationPlace.bind(this);
+    this.postPlaceSchedule = this.postPlaceSchedule.bind(this);
     console.log('Initialize PlaceService...');
   }
   
@@ -32,8 +33,11 @@ class PlaceService {
     ).catch(error=> console.error(error));
   }
 
-  getPlaces() {
-    return fetch(`${hosting}/api/v1/establishments/`, 
+  getPlaces(pageNum) {
+    const url = new URL(`${hosting}/api/v1/establishments/`);
+    const params = { page: pageNum};
+    url.search = new URLSearchParams(params);
+    return fetch(url, 
           {
            method:'GET', 
            headers: headers,
@@ -61,6 +65,24 @@ class PlaceService {
         return value;
     })
     .catch(error => console.error(error));
+  }
+  
+  postPlaceSchedule(days, placeId){
+    return new Promise((resolve, reject) => {
+      let postDays = {schedule:[], establishment_id:placeId};
+      const daysArray = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+      for (let i = 0; i < 5; i++) {
+        postDays.schedule.push({day:daysArray[i], start_hour:`${days.week_start}:00:00`, end_hour:`${days.week_end}:00:00`});
+      }
+      postDays.schedule.push({days:daysArray[5], start_hour:`${days.saturday_start}:00:00`, end_hour:`${days.saturday_end}:00:00`});
+      postDays.schedule.push({days:daysArray[5], start_hour:`${days.holidays_start}:00:00`, end_hour:`${days.holidays_start_end}:00:00`});
+      fetch(`${hosting}/api/v1/apertures/`, {
+        method:'POST',
+        headers:headers,
+        body:JSON.stringify(postDays)
+      }).then( response => resolve(response.json()))
+      .catch(error => console.error(error));
+    });
   }
   
   relationPlace(userId, placeId, workerVp = 1){

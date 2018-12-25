@@ -59,23 +59,24 @@ class Register extends Component {
 
   registerUser(newUser){
     auth.registerUser(newUser).then(response=>{
-       if(response && response.status === 'ok'){
+       if(response && response.data){
         // TODO THIS WILL WORK WHEN THE BACKEND SEND ME THE TOKEN
         // auth.saveUser(response.data);
         auth.loginWithEmailAndPassword(this.state.email, this.state.password).then((response)=>{
-           if(response && response.status === 'ok'){
+           if(response && response.data){
               auth.saveUser(response.data);
               this.props.history.push('/');
            }else{
              this.setState({errorMessage: response.message});
            }
         }).catch(error => {
+          console.error(error);
           this.setState({errorMessage: error.message});
         });
       } else {
         this.setState({errorMessage: response.message});
       }
-    }).catch(error => console.log(error));
+    }).catch(error => console.error(error));
   }
 
   handleChange(name, value){
