@@ -25,7 +25,8 @@ class PlacePost extends Component {
     this.marker = null;
     this.place = null;
     this.userID = null;
-    this.state = {person:null, people: [], isOpen: false, dayInputs:{}};
+    this.state = {person:null, people: [], isOpen: false, 
+                  dayInputs:{week_start:'', week_end:'', saturday_end:'', saturday_start:'', holidays_start:'', holidays_end:''}};
   }
   
   componentDidMount(){
@@ -43,8 +44,9 @@ class PlacePost extends Component {
     });
     this.marker.addListener('drag', (e) => this.changeMarker(e, this.marker)); 
     const input = document.getElementById('place-address-input');
-    const autocomplete = new window.google.maps.places.Autocomplete(input);
-    
+    const autocomplete = new window.google.maps.places.Autocomplete(input, {
+                types: ['address']
+            });
     // Bind the map's bounds (viewport) property to the autocomplete object,
     // so that the autocomplete requests use the current map bounds for the
     // bounds option in the request.
@@ -127,10 +129,12 @@ class PlacePost extends Component {
   
   goToHome(response){
     this.props.history.push('/');
-    placeService.postPlaceSchedule(this.state.dayInputs, 12)
-      .then(response => {
-      console.log(response);
-      this.updateUser(response);
+    placeService.postPlaceSchedule(this.state.dayInputs, response.data.id)
+      .then(schedule => {
+      const schedules = schedule.data.map( value => value.schedule);
+      let updatedPlace = response;
+      updatedPlace.establishment_schedule = schedules;
+      this.updateUser(updatedPlace);
     }).catch(error => console.error(error));
   }
   
@@ -144,6 +148,7 @@ class PlacePost extends Component {
     let user = {user: this.props.user, establishment:response.data, establishment_schedule:response.data.schedule};
     user.user.role_vp = "admin";
     auth.saveUser(user);
+    console.log(user);
   }
   
   savePhotoInCache(file) {
@@ -172,10 +177,16 @@ class PlacePost extends Component {
   }
   
   handleArrayChange(event){
-   const value = event.target.value;
    const name = event.target.name;
+   const { value, maxLength } = event.target;
+   let message
+   if(value == 10 || value == 11 || value == 12){
+     message = value;
+   } else {
+      message = value.slice(0, maxLength);
+   }
    this.setState((prevState) => {
-     return { dayInputs: { ...prevState.dayInputs ,...{[name]:value}}};
+     return { dayInputs: { ...prevState.dayInputs ,...{[name]:message}}};
    });
   }
   
@@ -185,8 +196,8 @@ class PlacePost extends Component {
     let daysName = [{name:'Lunes a Viernes', key:'week'}, {name:'Sabado', key:'saturday'}, {name:'Festivos', key:'holidays'}];
     for (let i = 0; i < daysName.length; i++) {
       daySchedule.push(( <div key={i}>
-                        <span>{daysName[i].name}:</span><input type="number" placeholder="Entrada" name={daysName[i].key + '_start'} className="input" style={{width:'50px'}} onChange={this.handleArrayChange} required/>
-                        -- <input type="number" placeholder="Salida" name={daysName[i].key + '_end'} className="input" style={{width:'50px'}} required onChange={this.handleArrayChange}/>
+                        <span>{daysName[i].name}:</span><input type="number" value={this.state.dayInputs[`${daysName[i].key}_start`]} placeholder="Entrada" maxLength="1" name={daysName[i].key + '_start'} className="input" style={{width:'50px', marginRight:'0', paddingRight:'0'}} onChange={this.handleArrayChange} required/><span style={{verticalAlign: 'sub', fontSize:'0.8em'}}>AM</span>
+                        <input type="number" placeholder="Salida" maxLength="1" name={daysName[i].key + '_end'} className="input" value={this.state.dayInputs[`${daysName[i].key}_end`]} style={{width:'50px', marginRight:'0', paddingRight:'0'}} required onChange={this.handleArrayChange}/><span style={{verticalAlign: 'sub', fontSize:'0.8em'}}>PM</span>
                         </div>));
     }
     return (

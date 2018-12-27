@@ -10,6 +10,7 @@ class PlaceService {
     this.getPlace = this.getPlace.bind(this);
     this.relationPlace = this.relationPlace.bind(this);
     this.postPlaceSchedule = this.postPlaceSchedule.bind(this);
+    this.converToAMFM = this.converToAMFM.bind(this);
     console.log('Initialize PlaceService...');
   }
   
@@ -71,11 +72,12 @@ class PlaceService {
     return new Promise((resolve, reject) => {
       let postDays = {schedule:[], establishment_id:placeId};
       const daysArray = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+      days = this.converToAMFM(days);
       for (let i = 0; i < 5; i++) {
         postDays.schedule.push({day:daysArray[i], start_hour:`${days.week_start}:00:00`, end_hour:`${days.week_end}:00:00`});
       }
-      postDays.schedule.push({days:daysArray[5], start_hour:`${days.saturday_start}:00:00`, end_hour:`${days.saturday_end}:00:00`});
-      postDays.schedule.push({days:daysArray[5], start_hour:`${days.holidays_start}:00:00`, end_hour:`${days.holidays_start_end}:00:00`});
+      postDays.schedule.push({day:daysArray[5], start_hour:`${days.saturday_start}:00:00`, end_hour:`${days.saturday_end}:00:00`});
+      postDays.schedule.push({day:daysArray[6], start_hour:`${days.holidays_start}:00:00`, end_hour:`${days.holidays_end}:00:00`});
       fetch(`${hosting}/api/v1/apertures/`, {
         method:'POST',
         headers:headers,
@@ -83,6 +85,16 @@ class PlaceService {
       }).then( response => resolve(response.json()))
       .catch(error => console.error(error));
     });
+  }
+  
+  converToAMFM(days){
+    days.week_start = parseInt(days.week_start) + 12;
+    days.week_end = parseInt(days.week_end) + 12;
+    days.saturday_start = parseInt(days.saturday_start) + 12;
+    days.saturday_end = parseInt(days.saturday_end) + 12;
+    days.holidays_start = parseInt(days.holidays_start) + 12;
+    days.holidays_end = parseInt(days.holidays_end) + 12;
+    return days;
   }
   
   relationPlace(userId, placeId, workerVp = 1){

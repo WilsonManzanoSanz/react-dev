@@ -95,6 +95,7 @@ class Places extends Component {
     console.log('loading ...', this.state.hasMore);
     this.number++;
     placeService.getPlaces(this.number).then(response => {
+      console.log(response);
        if(response.length < 1){
          this.setState({hasMore:false});
        } 

@@ -14,7 +14,6 @@ class PlaceCard extends Component {
   }
   
   goToProps(){
-    //const photo = (this.props.place.photos) ? (this.props.place.photos[0].getUrl()) : (this.props.place.icon);
     this.props.history.push({pathname:`/place/${this.props.place.id}`, 
                              state:{place:{
                                id:this.props.place.id, 

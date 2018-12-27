@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
 import PropTypes from 'prop-types';
-import { withRouter } from "react-router-dom";
-
+import { withRouter } from 'react-router-dom';
+import PlaceCardServices from '../place-services';
+import PlaceMaps from '../place-maps';
 import './style.scss';
 let map;
 
@@ -14,16 +15,6 @@ class PlaceDetailedCard extends Component {
   }
   
   componentDidMount(){
-    if(this.props.expandCard){
-      map = new window.google.maps.Map(document.getElementById('map-detail'), {
-        center: this.props.place.position,
-        zoom: 15
-      });
-      const marker = new window.google.maps.Marker({
-        map: map,
-        position: this.props.place.position
-      });
-    }
   }
   
   goToStaffs(e){
@@ -70,35 +61,8 @@ class PlaceDetailedCard extends Component {
         <hr/>
         <h3 className="margin10">Services</h3> 
          { this.props.expandCard &&  
-         <div> 
-           <img className="half-image" src="https://www.elheraldo.co/sites/default/files/styles/width_860/public/articulo/2015/05/04/chuzo_desgranado_natalli_8.jpg?itok=IJvku1cn" alt="photico"/>
-           <img className="half-image" src="https://www.mycolombianrecipes.com/wp-content/uploads/2014/02/mazorca-desgranada-colombiana.jpg" alt="photico"/>
-           <div className="flex-header padding10">
-             <span className="nospace">Una salchipapaso </span>
-             <span className="gray sub-span"> 30K</span>
-             <span className="spacer"></span>
-             <button className="raised">PEDIR</button>
-          </div>
-          <div className="flex-header padding10">
-             <span className="nospace">Una hamburguesaria </span>
-             <span className="gray sub-span"> 10K</span>
-             <span className="spacer"></span>
-             <button className="raised">PEDIR</button>
-          </div>
-        </div>
-        }
-        <div className="flex-header padding10">
-           <span className="nospace">Un perrario </span>
-           <span className="gray sub-span"> 50K</span>
-           <span className="spacer"></span>
-           <button className="raised">PEDIR</button>
-        </div>
-        <div className="flex-header padding10">
-           <span className="nospace">Un pataconario </span>
-           <span className="gray sub-span"> 20K</span>
-           <span className="spacer"></span>
-           <button className="raised">PEDIR</button>
-        </div>
+          <PlaceCardServices />
+         }
         { this.props.expandCard &&
           <div>
           {!this.props.editMode ? (<button  className="center-button schedule-button" type="button" onClick={(e) => this.goToStaffs(e)}>
@@ -111,7 +75,7 @@ class PlaceDetailedCard extends Component {
             {hoursSchedule}
             <div>
             <h2>Location</h2>
-              <div id="map-detail"></div>
+            <PlaceMaps position={this.props.place.position}/>
             </div>
           </div>
         }
