@@ -38,7 +38,6 @@ class ProfileCard extends Component {
   }
   
   render(){
-    console.log(this.props.user.establishment);
     let workers = (this.props.user.establishment) ? this.props.user.establishment.workers.map((value) => {
       return  <div className="card" key={value.id} onClick={() => console.log(value)}><UserHeader user={value}/></div>
     }) : (null);
@@ -59,7 +58,7 @@ class ProfileCard extends Component {
         { this.props.user.establishment &&  
           <div>
             <h2>You have an establishment</h2>                            
-            <PlaceDetailedCard place={this.props.user.establishment} editMode={true} id={this.props.user.establishment.id} className="card" expandCard={true}/>                        
+            <PlaceDetailedCard place={this.props.user.establishment} editMode={true} id={this.props.user.establishment.id} className="card" expandCard={true} history={this.props.history} match={this.props.match} location={this.props.location}/>                        
           </div>
         } { this.props.user.establishment &&  
          <div>

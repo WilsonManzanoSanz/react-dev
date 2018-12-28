@@ -148,7 +148,7 @@ class AuthService {
     //if(establishment ){
     //  this.user.establishment = establishment;
     if(user.establishment){
-      this.user.establishment.schedule = user.establishment_schedule;
+      this.user.establishment.schedules = user.establishment_schedule;
       this.user.establishment.position = {lat: parseFloat(user.establishment.latitude), lng: parseFloat(user.establishment.longitude)}; 
     }
    // }
@@ -176,7 +176,7 @@ class AuthService {
   }
   
   getAllTheUsers(name, role = 'admin'){
-    const url = new URL(`${hosting}/api/v1/users`);
+    const url = new URL(`${hosting}/api/v1/users_availables`);
     const params = { name: name, not_role: role};
     url.search = new URLSearchParams(params);
     return fetch(url,

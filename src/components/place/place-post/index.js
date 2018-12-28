@@ -145,7 +145,7 @@ class PlacePost extends Component {
   }
   
   updateUser(response){
-    let user = {user: this.props.user, establishment:response.data, establishment_schedule:response.data.schedule};
+    let user = {user: this.props.user, establishment:response.data, establishment_schedule:response.data.establishment_schedule};
     user.user.role_vp = "admin";
     auth.saveUser(user);
     console.log(user);

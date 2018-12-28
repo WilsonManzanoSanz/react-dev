@@ -92,10 +92,9 @@ class Places extends Component {
   }
   
   loadMore(){
-    console.log('loading ...', this.state.hasMore);
     this.number++;
     placeService.getPlaces(this.number).then(response => {
-      console.log(response);
+      console.log('places',response);
        if(response.length < 1){
          this.setState({hasMore:false});
        } 
@@ -106,7 +105,7 @@ class Places extends Component {
   render(){
     const listPlaces = this.state.results.map((value) => {
       value.position = { lat: value.latitude , lng: value.longitude };
-      return (<PlaceDetailedCard key={value.id} place={value} editMode={false} expandCard={false}/>);
+      return (<PlaceDetailedCard key={value.id} place={value} editMode={false} expandCard={false} history={this.props.history} match={this.props.match} location={this.props.location}/>);
     });
     return (
         <InfiniteScroll
@@ -114,7 +113,7 @@ class Places extends Component {
           loadMore={this.loadMore}
           hasMore={this.state.hasMore}
           loader={<div className="loader" key={0}>Loading ...</div>}>
-          { this.state.place && <PlaceCard id="map-marker" place={this.state.place} delete={true} closeItself={this.hideDetials}/>}
+          { this.state.place && <PlaceCard id="map-marker" place={this.state.place} delete={true} closeItself={this.hideDetials} />}
           <div id="map" style={{height:'400px'}}></div>
           <div className="padding20">
            { listPlaces }

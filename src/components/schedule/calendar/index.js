@@ -71,7 +71,7 @@ class ScheduleCalender extends Component {
   
   selectDay(num, day, month){
     if(!this.days[num-1].disabled){
-      this.setState({date: `You choose ${num}/${this.date.getMonth()+1}/${this.date.getFullYear()}`});
+      this.props.changeDate(`You choose ${num}/${this.date.getMonth()+1}/${this.date.getFullYear()}`);
       this.removeActiveClass();
       this.days[num-1] = {...this.days[num-1], ...{className:this.days[num-1].className + ' vcal-date--selected'}};
       this.setState({days: this.days});
@@ -139,9 +139,9 @@ class ScheduleCalender extends Component {
   }
   
   render(){
-    const days = this.state.days.map(value => <div  onClick={(e) => this.selectDay(value.num, value.day, value.month)} className={value.className} key={value.key} style={value.style} data-calendar-status={value.attribute} data-calendar-date={this.date}><span>{value.num}</span></div>);
+    const days = this.state.days.map(value => <div onClick={(e) => this.selectDay(value.num, value.day, value.month)} className={value.className} key={value.key} style={value.style} data-calendar-status={value.attribute} data-calendar-date={this.date}><span>{value.num}</span></div>);
     return (
-    <div className="card">
+    <div>
         {this.props.user && <h1 className="nomargin">{this.props.user.name}</h1>}
         <h3 className="gray nomargin">Choose a day to schedule</h3>
         <div id="v-cal">
@@ -176,51 +176,6 @@ class ScheduleCalender extends Component {
             {days}
           </div>
         </div>
-
-        <p className="demo-picked">
-          Date picked:
-          <span data-calendar-label="picked">{this.state.date}</span>
-        </p>
-        <div className="horizontal flex" style={{overflowX:'scroll',border:'1px solid #e4e1e1'}}>
-          <div className="card">
-            7:30pm
-          </div>
-          <div className="card">
-              7:30pm
-            </div>
-          <div className="card">
-              7:30pm
-            </div>
-          <div className="card">
-              7:30pm
-            </div>
-          <div className="card">
-              7:30pm
-            </div>
-
-          <div className="card">
-              7:30pm
-            </div>
-          <div className="card">
-              7:30pm
-            </div>
-          <div className="card">
-              7:30pm
-            </div>
-          <div className="card">
-              7:30pm
-            </div>
-          <div className="card">
-              7:30pm
-            </div>
-          <div className="card">
-              7:30pm
-            </div>
-          <div className="card">
-              7:30pm
-            </div>
-      </div>
-        <button className="full-width-important center-button" type="button">RESERVE</button>
       </div>); 
   }
 }

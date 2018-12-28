@@ -58,7 +58,6 @@ class PlaceWorkers extends Component {
         this.setState({place:gottenPlace});
       }).catch(error => console.error(error));
     }
-    //console.log(this.props);
   }
   
   removeUser(){
@@ -90,6 +89,8 @@ class PlaceWorkers extends Component {
   }
   
   render(){
+    //console.log('workers',this.state.place.workers);
+    //console.log('people', this.state.people);
     let workers = (this.state.place.workers) ? this.state.place.workers.map((value, idx) => {
       return  (<div className="card" key={value.id} onClick={() => console.log(value)}>
                 <UserHeader user={value} deleteOption={true} removeWorker={(e) => this.toggleModal(e, 2, value.id, idx)}/>
@@ -126,12 +127,12 @@ class PlaceWorkers extends Component {
         <Modal show={this.state.isOpen}
           onClose={(e) => this.toggleModal(e, 1)} minHeight={150}>
           <p>Do yo really want to add this user to your establishment?</p>
-          <button type="button" className="center-button" onClick={this.addRelation}>ADD</button>
+          <button type="button" className="center-button" style={{backgroundColor:'green'}} onClick={this.addRelation}>ADD</button>
         </Modal>
         <Modal show={this.state.isOpen2}
           onClose={(e) => this.toggleModal(e, 2)} minHeight={150}>
           <p>Do yo really want to DELETE this user in your establishment?</p>
-          <button type="button" className="center-button" onClick={this.removeUser}>DELETE</button>
+          <button type="button" className="center-button" style={{backgroundColor:'red'}} onClick={this.removeUser}>DELETE</button>
         </Modal>                                 
       </div>);
   }

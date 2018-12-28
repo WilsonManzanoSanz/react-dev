@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import PlaceCardServices from '../place-services';
 import PlaceMaps from '../place-maps';
 import './style.scss';
@@ -24,9 +23,7 @@ class PlaceDetailedCard extends Component {
   }
   
   goToProps(e, path){
-    console.log(this.props.place);
      e.stopPropagation(); 
-    //const photo = (this.props.place.photos) ? (this.props.place.photos[0].getUrl()) : (this.props.place.icon);
     if(this.props.location.pathname === '/' || this.props.location.pathname === 'auth/profile'){
       window.scrollTo(0, 0);
     }
@@ -42,26 +39,27 @@ class PlaceDetailedCard extends Component {
           address:this.props.place.address,
           photo_url:this.props.place.photo_url,
           position:this.props.place.position,
-          schedule:this.props.place.schedule,
+          schedules:this.props.place.schedules,
           workers:this.props.place.workers,
           }}}); 
   }
   
   render(){
     let hoursSchedule = null;
-    if(this.props.place.schedule){
-       hoursSchedule = this.props.place.schedule.map((value, idx) => <p key={idx}>{value.day.toUpperCase()} {value.start_hour} - {value.end_hour} </p>);
+    if(this.props.place.schedules){
+       hoursSchedule = this.props.place.schedules.map((value, idx) => <p key={idx}>{value.day} {value.start_hour} - {value.end_hour} </p>);
     }
-   //console.log(this.props.place);
     return (
       <div id={this.props.id} className={this.props.className} onClick={(e) => this.goToProps(e, `/place/${this.props.place.id}`)}>
         {this.props.expandCard ? (<h1 className="nospace">{this.props.place.name}</h1>) : (<h2 className="nospace">{this.props.place.name}</h2>)}
         <h4 className="nospace gray">{this.props.place.address}</h4>
         <img  className="image-card" src={this.props.place.photo_url}/>
-        <hr/>
-        <h3 className="margin10">Services</h3> 
          { this.props.expandCard &&  
+          <div>
+          <hr/>
+          <h3 className="margin10">Services</h3> 
           <PlaceCardServices />
+          </div>
          }
         { this.props.expandCard &&
           <div>
@@ -90,6 +88,9 @@ PlaceDetailedCard.propTypes = {
   className: PropTypes.string,
   expandCard: PropTypes.bool,
   editMode: PropTypes.bool,
+  history:PropTypes.object,
+  match:PropTypes.object,
+  location:PropTypes.object,
 };
 
 PlaceDetailedCard.defaultProps = {
@@ -101,4 +102,4 @@ PlaceDetailedCard.defaultProps = {
   place: {schedule:[], workers:[], position:{lat:10.9846052, lng:-74.8057843}},
 };
 
-export default withRouter(PlaceDetailedCard);
+export default PlaceDetailedCard;

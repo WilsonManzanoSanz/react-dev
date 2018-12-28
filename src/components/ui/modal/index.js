@@ -31,7 +31,7 @@ class Modal extends Component {
     };
     
     const button = {
-      backgroundColor: 'red',
+      backgroundColor: 'white',
       color:'white',
     };
 
@@ -40,7 +40,7 @@ class Modal extends Component {
         <div className = "modal" style = { modalStyle}> 
           {this.props.children}
           <div className = "footer">
-            <button className="center-button" style={ button } onClick={this.props.onClose}> Close </button>
+            <button className="center-button raised" onClick={this.props.onClose}> Close </button>
           </div> 
         </div> 
       </div>
